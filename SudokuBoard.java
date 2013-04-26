@@ -1,5 +1,12 @@
 import java.util.LinkedList;
 
+/**
+ * This is a class to store the data for the Sudoku Board. Feel free to edit this, 
+ * or not use it all for the project.
+ * @author Kalana
+ *
+ */
+
 public class SudokuBoard {
 	int[][] boardArray;
 	SudokuBoard () {
@@ -62,12 +69,15 @@ public class SudokuBoard {
 		for (int i = 0; i<9; i++) {
 			Square checkSquare = new Square(this, i);
 			// If either the column, row or square for this value of i is not solved, returns false
+			//TODO Haven't checked diagonals yet
 			if(!rowIsSolved(i)||!columnIsSolved(i)||!checkSquare.isSolved()) {
 				return false;
 			}
 		}
 		return true;
 	}
+	
+	//TODO boolean diagonalIsSolved (int diagonal)
 	
 }
 

@@ -1,5 +1,10 @@
 import java.util.LinkedList;
-
+/**
+ * Class that is used to store data from a 3x3 square, for checking purposes
+ * Could be used later when giving hints, etc
+ * @author Kalana
+ *
+ */
 
 public class Square {
 	final int[][] squareArray;
