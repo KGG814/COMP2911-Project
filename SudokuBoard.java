@@ -41,10 +41,10 @@ public class SudokuBoard {
 		for (int i = 0; i < 9; i++){
 			currentNumber = boardArray[i][row];
 			if (currentNumber<1||currentNumber>9||
-				numberList.contains(boardArray[i][row])) {
+				numberList.contains(currentNumber)) {
 				return false;
 			} else {
-				numberList.add(boardArray[i][row]);
+				numberList.add(currentNumber);
 			}
 		}
 		return true;
@@ -56,10 +56,37 @@ public class SudokuBoard {
 		for (int j = 0; j < 9; j++){
 			currentNumber = boardArray[column][j];
 			if (currentNumber<1||currentNumber>9||
-				numberList.contains(boardArray[column][j])) {
+				numberList.contains(currentNumber)) {
 				return false;
 			} else {
-				numberList.add(boardArray[column][j]);
+				numberList.add(currentNumber);
+			}
+		}
+		return true;
+	}
+	
+	boolean diagonalIsSolved (int diagonal) {
+		LinkedList<Integer> numberList = new LinkedList<Integer>();
+		int currentNumber;
+		if (diagonal==0) {
+			for (int i = 0; i < 9; i++){
+				currentNumber = boardArray[i][i];
+				if (currentNumber<1||currentNumber>9||
+					numberList.contains(currentNumber)) {
+					return false;
+				} else {
+					numberList.add(currentNumber);
+				}
+			}
+		} else if (diagonal==1) {
+			for (int i = 8; i >=0; i--){
+				currentNumber = boardArray[i][8-i];
+				if (currentNumber<1||currentNumber>9||
+					numberList.contains(currentNumber)) {
+					return false;
+				} else {
+					numberList.add(currentNumber);
+				}
 			}
 		}
 		return true;
@@ -68,16 +95,15 @@ public class SudokuBoard {
 	boolean isSolved () {
 		for (int i = 0; i<9; i++) {
 			Square checkSquare = new Square(this, i);
-			// If either the column, row or square for this value of i is not solved, returns false
-			//TODO Haven't checked diagonals yet
 			if(!rowIsSolved(i)||!columnIsSolved(i)||!checkSquare.isSolved()) {
 				return false;
 			}
 		}
+		if(!diagonalIsSolved(0)||!diagonalIsSolved(1)) {
+			return false;
+		}
 		return true;
 	}
-	
-	//TODO boolean diagonalIsSolved (int diagonal)
 	
 }
 
