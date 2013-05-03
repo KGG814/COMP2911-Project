@@ -2,20 +2,19 @@
  * The Sudoku GUI
  * @author Daniel
  */
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
-
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.*;
 import javax.swing.JFrame;
 import javax.swing.JFormattedTextField;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.text.DefaultFormatterFactory;
 import javax.swing.text.MaskFormatter;
 import javax.swing.JButton;
 
 public class SudokuGUI {
 
-  private JFrame frame;
+	private JFrame frame;
 
 	/**
 	 * Launch the application.
@@ -73,7 +72,6 @@ public class SudokuGUI {
 		createSquare(214, 10);
 		createSquare(214, 112);
 		createSquare(214, 214);
-		
 	}
 	
 	/*
@@ -82,7 +80,7 @@ public class SudokuGUI {
 	private void createSquare(int row, int column) {
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < 3; j++) {
-			JFormattedTextField formattedTextField = new JFormattedTextField();
+			final JFormattedTextField formattedTextField = new JFormattedTextField();
 			//only accept one number
 			try {
 				formattedTextField.setFormatterFactory(new DefaultFormatterFactory(new MaskFormatter("#")));
@@ -91,6 +89,12 @@ public class SudokuGUI {
 	        formattedTextField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 			formattedTextField.setBounds(row+(i*33), column+(j*33), 32, 32);
 			frame.getContentPane().add(formattedTextField);
+			formattedTextField.addActionListener(new ActionListener() 
+			{
+				public void actionPerformed(ActionEvent e) {
+					//put an action here
+				}
+			});
 			}
 		}
 	}
