@@ -1,101 +1,65 @@
-/*
- * The Sudoku GUI
- * @author Daniel
- */
-import java.awt.EventQueue;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.*;
-import javax.swing.JFrame;
-import javax.swing.JFormattedTextField;
-import javax.swing.text.DefaultFormatterFactory;
-import javax.swing.text.MaskFormatter;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Toolkit;
+
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
 
-public class SudokuGUI {
-
-	private JFrame frame;
-
+/**
+ * The GUI Class to hold everything for the sudoku puzzle
+ * which includes the sudoku board, buttons and images if
+ * we want
+ *
+ */
+public class SudokuGUI extends JFrame {
+	
 	/**
-	 * Launch the application.
+	 * For some reason I have to put an ID
 	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					SudokuGUI window = new SudokuGUI();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+	private static final long serialVersionUID = 1L;
 
 	/**
-	 * Create the application.
+	 * Puts everything on the JFrame
 	 */
 	public SudokuGUI() {
-		initialize();
+		JPanel panel = new JPanel();
+		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+		
+		JPanel sudokuBoard = new SudokuBoard();
+		JPanel buttons = setButtons();
+		
+		panel.add(sudokuBoard);
+		panel.add(buttons);
+		
+		add(panel);
+		
+		//Set JFrame Properties
+		setLayout(new FlowLayout(FlowLayout.CENTER));
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		pack();
+		Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
+		setLocation((d.width / 2 - 175), (d.height / 2 - 275));
+		setResizable(true);
+		setVisible(true);
+	}
+	
+	/**
+	 * 
+	 * @return A JPanel that creates all the buttons
+	 */
+	public JPanel setButtons() {
+		JPanel buttons = new JPanel();
+		
+		JButton New = new JButton("New");
+		JButton GetHint = new JButton("Get Hint");
+		JButton Check = new JButton("Check");
+		buttons.add(New);
+		buttons.add(GetHint);
+		buttons.add(Check);
+		
+		return buttons;
 	}
 
-	/**
-	 * Initialize the contents of the frame.
-	 */
-	private void initialize() {
-		frame = new JFrame();
-		frame.setBounds(100, 100, 592, 406);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(null);
-		
-		JButton btnGetHint = new JButton("Get Hint");
-		btnGetHint.setBounds(340, 11, 89, 23);
-		frame.getContentPane().add(btnGetHint);
-		
-		JButton btnQuit = new JButton("Quit");
-		btnQuit.setBounds(439, 11, 89, 23);
-		frame.getContentPane().add(btnQuit);
-		
-		createBoard();
-	}
-	
-	/*
-	 * Creates the sudoku board
-	 */
-	private void createBoard() {
-		createSquare(10, 10);
-		createSquare(10, 112);
-		createSquare(10, 214);
-		createSquare(112, 10);
-		createSquare(112, 112);
-		createSquare(112, 214);
-		createSquare(214, 10);
-		createSquare(214, 112);
-		createSquare(214, 214);
-	}
-	
-	/*
-	 * create a square with the given row and column number on the screen
-	 */
-	private void createSquare(int row, int column) {
-		for(int i = 0; i < 3; i++) {
-			for(int j = 0; j < 3; j++) {
-			final JFormattedTextField formattedTextField = new JFormattedTextField();
-			//only accept one number
-			try {
-				formattedTextField.setFormatterFactory(new DefaultFormatterFactory(new MaskFormatter("#")));
-	        } catch (java.text.ParseException ex) {
-	        }
-	        formattedTextField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-			formattedTextField.setBounds(row+(i*33), column+(j*33), 32, 32);
-			frame.getContentPane().add(formattedTextField);
-			formattedTextField.addActionListener(new ActionListener() 
-			{
-				public void actionPerformed(ActionEvent e) {
-					//put an action here
-				}
-			});
-			}
-		}
-	}
 }
