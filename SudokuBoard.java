@@ -1,109 +1,118 @@
+import java.awt.*;
 import java.util.LinkedList;
 
+import javax.swing.JPanel;
+
 /**
- * This is a class to store the data for the Sudoku Board. Feel free to edit this, 
- * or not use it all for the project.
- * @author Kalana
- *
+ * A Class to represent the sudoku board
+ * This contains 9 squares
+ * Each square is arranged similar to a square
+ * Using a 2-dimensional array
+ *  Square[rows][columns]
  */
+public class SudokuBoard extends JPanel {
+		
+   /**
+	* For some reason I have to put an ID
+	*/
+	private static final long serialVersionUID = 1L;
+	
+	private Square[][] boxes;
+	
+	public SudokuBoard() {
+		//Set Board Properties
+		setLayout(new GridLayout(3, 3, 1, 1));
 
-public class SudokuBoard {
-	int[][] boardArray;
-	SudokuBoard () {
-		boardArray = new int[9][9];
-	}
-	/**
-	 * Sets the number at coordinate x,y
-	 * 0,0 is in the bottom left corner
-	 * @param x horizontal position of Sudoku tile
-	 * @param y vertical position of Sudoku tile
-	 * @param number the number that will be placed
-	 */
-	void setNumber (int x, int y, int number) {
-		boardArray[x][y] = number;
-	}
-	/**
-	 * Returns the 3*3 square corresponding to squareNumber.
-	 * Squares are numbered left to right, top to bottom :
-	 * 6 7 8
-	 * 3 4 5
-	 * 0 1 2
-	 * @param squareNumber the number of the corresponding 3x3 square
-	 * @return a 3x3 square
-	 */
-	int getNumber (int x, int y) {
-		return boardArray[x][y];
-	}
-	
-	private boolean rowIsSolved (int row) {
-		LinkedList<Integer> numberList = new LinkedList<Integer>();
-		int currentNumber;
-		for (int i = 0; i < 9; i++){
-			currentNumber = boardArray[i][row];
-			if (currentNumber<1||currentNumber>9||
-				numberList.contains(currentNumber)) {
-				return false;
-			} else {
-				numberList.add(currentNumber);
+		//Creates 9 squares
+		boxes = new Square[3][3];
+		for(int i = 0; i < 3; i++){
+			for(int j = 0; j < 3; j++) {
+				boxes[i][j] = new Square();
+				add(boxes[i][j]);				
 			}
 		}
-		return true;
 	}
 	
-	private boolean columnIsSolved (int column) {
+	/**
+	 * Is the row solved
+	 * Checks each square in the squareRow and each row in those squares
+	 * @param squareRow - corresponds to the row of squares
+	 * 	0 - bottom squares, 1 - middle squares, 2 - top squares
+	 * @param row - corresponds to the row in the square
+	 *  0 - bottom row, 1 - middle row, 2 - top row
+	 * @return if the row is solved returns true
+	 */
+	public boolean rowIsSolved(int squareRow, int row) {
 		LinkedList<Integer> numberList = new LinkedList<Integer>();
-		int currentNumber;
-		for (int j = 0; j < 9; j++){
-			currentNumber = boardArray[column][j];
-			if (currentNumber<1||currentNumber>9||
-				numberList.contains(currentNumber)) {
-				return false;
-			} else {
-				numberList.add(currentNumber);
-			}
-		}
-		return true;
-	}
-	
-	boolean diagonalIsSolved (int diagonal) {
-		LinkedList<Integer> numberList = new LinkedList<Integer>();
-		int currentNumber;
-		if (diagonal==0) {
-			for (int i = 0; i < 9; i++){
-				currentNumber = boardArray[i][i];
-				if (currentNumber<1||currentNumber>9||
-					numberList.contains(currentNumber)) {
+		
+		for(int i = 0; i < 3; i++) {
+			for(int j = 0; j < 3; j++) {
+				//Iterates through each square in the row
+				Square chosen = boxes[squareRow][i];
+				//Iterates through each cell in the row
+				Cell cell = chosen.getCell(row, j);
+				int cellNumber = cell.getNumber();
+				
+				if(cellNumber == 0 || numberList.contains(cellNumber)) {
 					return false;
 				} else {
-					numberList.add(currentNumber);
-				}
-			}
-		} else if (diagonal==1) {
-			for (int i = 8; i >=0; i--){
-				currentNumber = boardArray[i][8-i];
-				if (currentNumber<1||currentNumber>9||
-					numberList.contains(currentNumber)) {
-					return false;
-				} else {
-					numberList.add(currentNumber);
+					numberList.add(cellNumber);
 				}
 			}
 		}
 		return true;
 	}
 	
-	boolean isSolved () {
-		for (int i = 0; i<9; i++) {
-			Square checkSquare = new Square(this, i);
-			if(!rowIsSolved(i)||!columnIsSolved(i)||!checkSquare.isSolved()) {
-				return false;
+	/**
+	 * Is the Column Solved
+	 * Checks each square in the squareColumn and each row in those squares
+	 * @param squareCol - corresponds to the column of square
+	 *  0 - left squares, 1 - middle squares, 2 - right squares
+	 * @param col - corresponds to the column in the square
+	 *  0 - left column, 1 - middle column, 2 - right column
+	 * @return if the column is solved returns true
+	 */
+	public boolean columnIsSolved(int squareCol, int col) {
+		LinkedList<Integer> numberList = new LinkedList<Integer>();
+		for(int i = 0; i < 3; i++) {
+			for(int j = 0; j < 3; j++) {
+				Square chosen = boxes[i][squareCol];
+				Cell cell = chosen.getCell(j, col);
+				int cellNumber = cell.getNumber();
+				if(cellNumber == 0 || numberList.contains(cellNumber)) {
+					return false;
+				} else {
+					numberList.add(cellNumber);
+				}
 			}
-		}
-		if(!diagonalIsSolved(0)||!diagonalIsSolved(1)) {
-			return false;
-		}
+		}		
 		return true;
 	}
 	
+	/**
+	 * Is the square solved
+	 * @param squareRow - row coordinate
+	 * @param squareCol - column coordinate
+	 * @return true if square is solved
+	 */
+	public boolean squareIsSolved(int squareRow, int squareCol) {
+		Square square = boxes[squareRow][squareCol];
+		return square.isSolved();
+	}
+	
+	/**
+	 * Is the puzzle Solved
+	 * Checks if each row, column and square is solved
+	 * @return true is puzzle is solved
+	 */
+	public boolean isSolved() {
+		for(int i = 0; i < 3; i++) {
+			for(int j = 0; j < 3; j++) {
+				if(!rowIsSolved(i, j) || !columnIsSolved(i, j) || !squareIsSolved(i, j)) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
 }
-
