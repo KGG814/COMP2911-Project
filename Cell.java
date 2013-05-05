@@ -29,20 +29,17 @@ public class Cell extends JFormattedTextField{
 		//only accept one number
 		try {
 			setFormatterFactory(new DefaultFormatterFactory(new MaskFormatter("#")));
-        } catch (java.text.ParseException ex) {
-        }
-        setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        	} catch (java.text.ParseException ex) {}
+        	
+ 
         
 		addKeyListener(new KeyAdapter(){
-
-			@Override
 			public void keyPressed(KeyEvent e) {
 				// Only allow numeric input
 				boolean editable = true;
 				if (editable) {
 					if (e.getKeyChar() >= '1' && e.getKeyChar() <= '9') {
 						setEditable(true);
-						//setText(""); // Keep it 1 letter
 						setNumber(e.getKeyChar() - 48);
 					} else {
 						setEditable(false);
@@ -52,6 +49,7 @@ public class Cell extends JFormattedTextField{
 		});
 		
 		//Set Cell Properties
+		setHorizontalAlignment(javax.swing.JTextField.CENTER);
 		setBorder(BorderFactory.createLineBorder(Color.GRAY));
 		setPreferredSize(new Dimension(35, 35));
 		setFont(new Font("Lucida Console", Font.BOLD, 18));
