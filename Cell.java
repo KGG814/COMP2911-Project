@@ -32,21 +32,20 @@ public class Cell extends JFormattedTextField{
         	} catch (java.text.ParseException ex) {}
         	
  
-        
+        /*
+         * Research and fix this
 		addKeyListener(new KeyAdapter(){
 			public void keyPressed(KeyEvent e) {
 				// Only allow numeric input
 				boolean editable = true;
-				if (editable) {
+				if (editable)
 					if (e.getKeyChar() >= '1' && e.getKeyChar() <= '9') {
 						setEditable(true);
 						setNumber(e.getKeyChar() - 48);
-					} else {
+					} else
 						setEditable(false);
-					}
-				}
 			}
-		});
+		});*/
 		
 		//Set Cell Properties
 		setHorizontalAlignment(javax.swing.JTextField.CENTER);
