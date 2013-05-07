@@ -3,13 +3,7 @@ import java.awt.GridLayout;
 
 import javax.swing.JPanel;
 
-/**
- * A Class to represent the sudoku board
- * This contains 9 squares
- * Each square is arranged similar to a square
- * Using a 2-dimensional array
- *  Square[rows][columns]
- */
+
 public class SudokuBoard extends JPanel {
 		
    /**
