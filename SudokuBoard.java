@@ -1,5 +1,5 @@
-import java.awt.*;
-import java.util.LinkedList;
+
+import java.awt.GridLayout;
 
 import javax.swing.JPanel;
 
@@ -17,102 +17,98 @@ public class SudokuBoard extends JPanel {
 	*/
 	private static final long serialVersionUID = 1L;
 	
-	private Square[][] boxes;
+	Cell[][] boardArray;
+	int[][] solutionArray;
 	
 	public SudokuBoard() {
 		//Set Board Properties
-		setLayout(new GridLayout(3, 3, 1, 1));
-
-		//Creates 9 squares
-		boxes = new Square[3][3];
+		setLayout(new GridLayout(9, 9, 1, 1));
 		for(int i = 0; i < 3; i++){
 			for(int j = 0; j < 3; j++) {
-				boxes[i][j] = new Square();
-				add(boxes[i][j]);				
-			}
+				boardArray[i][j] = new Cell();
+				add(boardArray[i][j]);				
+	 		}
 		}
+		solutionArray = new int[9][9];
+	}
+	void setNumber (int x, int y, int number) {
+		boardArray[x][y].setNumber(number);
+	}
+
+	int getNumber (int x, int y) {
+		return boardArray[x][y].getNumber();
 	}
 	
-	/**
-	 * Is the row solved
-	 * Checks each square in the squareRow and each row in those squares
-	 * @param squareRow - corresponds to the row of squares
-	 * 	0 - bottom squares, 1 - middle squares, 2 - top squares
-	 * @param row - corresponds to the row in the square
-	 *  0 - bottom row, 1 - middle row, 2 - top row
-	 * @return if the row is solved returns true
-	 */
-	public boolean rowIsSolved(int squareRow, int row) {
-		LinkedList<Integer> numberList = new LinkedList<Integer>();
-		
-		for(int i = 0; i < 3; i++) {
-			for(int j = 0; j < 3; j++) {
-				//Iterates through each square in the row
-				Square chosen = boxes[squareRow][i];
-				//Iterates through each cell in the row
-				Cell cell = chosen.getCell(row, j);
-				int cellNumber = cell.getNumber();
-				
-				if(cellNumber == 0 || numberList.contains(cellNumber)) {
-					return false;
-				} else {
-					numberList.add(cellNumber);
-				}
-			}
-		}
-		return true;
+	public boolean checkRow( int row, int num ) {
+	      for( int i = 0; i < 9; i++ ) {
+	         if( solutionArray[i][row] == num ) {
+	            return false;
+	         }
+	      }
+	      return true;
 	}
 	
-	/**
-	 * Is the Column Solved
-	 * Checks each square in the squareColumn and each row in those squares
-	 * @param squareCol - corresponds to the column of square
-	 *  0 - left squares, 1 - middle squares, 2 - right squares
-	 * @param col - corresponds to the column in the square
-	 *  0 - left column, 1 - middle column, 2 - right column
-	 * @return if the column is solved returns true
-	 */
-	public boolean columnIsSolved(int squareCol, int col) {
-		LinkedList<Integer> numberList = new LinkedList<Integer>();
-		for(int i = 0; i < 3; i++) {
-			for(int j = 0; j < 3; j++) {
-				Square chosen = boxes[i][squareCol];
-				Cell cell = chosen.getCell(j, col);
-				int cellNumber = cell.getNumber();
-				if(cellNumber == 0 || numberList.contains(cellNumber)) {
-					return false;
-				} else {
-					numberList.add(cellNumber);
-				}
-			}
-		}		
-		return true;
+	public boolean checkCol( int col, int num ) {
+	      for( int i = 0; i < 9; i++ ) {
+	         if( solutionArray[col][i] == num ) {
+	            return false;
+	         }
+	      }
+	      return true;
 	}
 	
-	/**
-	 * Is the square solved
-	 * @param squareRow - row coordinate
-	 * @param squareCol - column coordinate
-	 * @return true if square is solved
-	 */
-	public boolean squareIsSolved(int squareRow, int squareCol) {
-		Square square = boxes[squareRow][squareCol];
-		return square.isSolved();
-	}
+   protected boolean checkBox( int col, int row, int num ) {
+      row = (row / 3) * 3 ;
+      col = (col / 3) * 3 ;
+
+      for( int r = 0; r < 3; r++ ) {
+         for( int c = 0; c < 3; c++ ) {
+	         if( solutionArray[col+c][row+r] == num ) {
+	            return false ;
+	         }
+         }
+      }   
+
+      return true ;
+   }
+   
+   public void runSolve ()  {
+	   for( int col = 0; col < 3; col++ ) {
+		   for( int row = 0; row < 3; row++ ) {
+			   solutionArray[col][row] = boardArray[col][row].getNumber();
+		   }
+	   }
+	   try {
+		   solve(0,0);
+	   } catch (Exception e) {
+		   
+	   }
 	
-	/**
-	 * Is the puzzle Solved
-	 * Checks if each row, column and square is solved
-	 * @return true is puzzle is solved
-	 */
-	public boolean isSolved() {
-		for(int i = 0; i < 3; i++) {
-			for(int j = 0; j < 3; j++) {
-				if(!rowIsSolved(i, j) || !columnIsSolved(i, j) || !squareIsSolved(i, j)) {
-					return false;
-				}
-			}
-		}
-		return true;
-	}
+   }
+   
+   public void solve (int col, int row) throws Exception {
+	   if (row>8) {
+		   throw new Exception("Solution succesful");
+	   }
+	   if (solutionArray[col][row] != 0) {
+		   next(row,col);
+	   } else {
+		   for( int num = 1; num < 10; num++) {
+			   if(checkRow(row,num)&&checkCol(col,num)&&checkBox(col,row,num)) {
+				   solutionArray[col][row] = num;
+				   next(row,col);
+			   }
+		   }
+		   solutionArray[col][row] = 0;
+	   }
+   }
+   
+   public void next (int col, int row) throws Exception {
+	   if (col<8) {
+		   solve(col+1,row);
+	   } else {
+		   solve(0,row+1);
+	   }
+   }
+
 }
