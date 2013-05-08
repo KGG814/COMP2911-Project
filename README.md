@@ -10,5 +10,7 @@ Make GUI 9x9 cells instead of 3x3. Or if we want to do 3x3, abstract it up a lev
 8/5/2013 
 
 Daniel: Fix Up GUI and relate GUI to our initial representation of the board (i.e solved array list with GUI)
+
 Kalana: Get SudokuSolutions and SudokuGenerator Working
-Chad: Start Main GUI Layout, without implementation so set Buttons with Labels but no actions.
+
+Chad: Start Main GUI Layout, without implementation so set Buttons with Labels but no actions. Design some pictures for GUI
