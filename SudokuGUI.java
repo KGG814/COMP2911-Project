@@ -1,5 +1,6 @@
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.Toolkit;
 
 import javax.swing.BoxLayout;
@@ -15,6 +16,7 @@ import javax.swing.JPanel;
  */
 public class SudokuGUI extends JFrame {
 	
+	Cell[][] boardArray;
 	/**
 	 * For some reason I have to put an ID
 	 */
@@ -24,15 +26,19 @@ public class SudokuGUI extends JFrame {
 	 * Puts everything on the JFrame
 	 */
 	public SudokuGUI() {
+		for (int col = 0; col < 9; col++){
+			for (int row = 0; row < 9; row++) {
+				boardArray[col][row] = new Cell();
+			}
+		}
+		
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-		
-		JPanel sudokuBoard = new SudokuBoard();
+		JPanel boardPanel = new JPanel();
+		boardPanel.setLayout(new GridLayout(9, 9, 1, 1));
 		JPanel buttons = setButtons();
-		
-		panel.add(sudokuBoard);
+		panel.add(boardPanel);
 		panel.add(buttons);
-		
 		add(panel);
 		
 		//Set JFrame Properties
@@ -62,4 +68,11 @@ public class SudokuGUI extends JFrame {
 		return buttons;
 	}
 
+	public void populateBoard (SudokuBoard board) {
+		for (int col = 0; col<9; col++) {
+			for (int row = 0; row<9; row++){
+				boardArray[col][row].setNumber(board.getNumber(col, row));
+			}
+		}
+	}
 }
