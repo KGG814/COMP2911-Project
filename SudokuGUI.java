@@ -7,6 +7,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JFormattedTextField;
 
 /**
  * The GUI Class to hold everything for the sudoku puzzle
@@ -21,15 +22,16 @@ public class SudokuGUI extends JFrame {
 	 * For some reason I have to put an ID
 	 */
 	private static final long serialVersionUID = 1L;
-	Cell[][] boardArray;
+	JFormattedTextField[][] boardArray;
 	
 	/**
 	 * Puts everything on the JFrame
 	 */
 	public SudokuGUI() {
 
+		boardArray = new JFormattedTextField[9][9];
+		
 		JPanel panel = new JPanel();
-
 		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
 
 		JPanel sudokuBoard = setBoard();
@@ -64,7 +66,7 @@ public class SudokuGUI extends JFrame {
 		
 		for (int col = 0; col < 9; col++){
 			for (int row = 0; row < 9; row++) {
-				boardArray[col][row] = new Cell();
+				boardArray[col][row] = new JFormattedTextField();
 				board.add(boardArray[col][row]);
 			}
 		}
@@ -121,7 +123,9 @@ public class SudokuGUI extends JFrame {
 	public void populateBoard (SudokuBoard board) {
 		for (int col = 0; col<9; col++) {
 			for (int row = 0; row<9; row++){
-				boardArray[col][row].setNumber(board.getNumber(col, row));
+				//want to out
+				String number = Integer.toString(board.getNumber(col, row));
+				boardArray[col][row].setText(number);
 			}
 		}
 	}
