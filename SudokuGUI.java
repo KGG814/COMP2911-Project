@@ -15,32 +15,36 @@ import javax.swing.JPanel;
  *
  */
 public class SudokuGUI extends JFrame {
+
 	
-	Cell[][] boardArray;
 	/**
 	 * For some reason I have to put an ID
 	 */
 	private static final long serialVersionUID = 1L;
-
+	Cell[][] boardArray;
+	
 	/**
 	 * Puts everything on the JFrame
 	 */
 	public SudokuGUI() {
-		for (int col = 0; col < 9; col++){
-			for (int row = 0; row < 9; row++) {
-				boardArray[col][row] = new Cell();
-			}
-		}
-		
+
 		JPanel panel = new JPanel();
-		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-		JPanel boardPanel = new JPanel();
-		boardPanel.setLayout(new GridLayout(9, 9, 1, 1));
+
+		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
+
+		JPanel sudokuBoard = setBoard();
 		JPanel buttons = setButtons();
-		panel.add(boardPanel);
-		panel.add(buttons);
+		JPanel numbers = setNumButtons();
+		JPanel other = new JPanel();
+
+		other.setLayout(new GridLayout(3, 3));
+		other.add(numbers);
+		other.add(buttons);
+
+		panel.add(sudokuBoard);
+		panel.add(other);
+
 		add(panel);
-		
 		//Set JFrame Properties
 		setLayout(new FlowLayout(FlowLayout.CENTER));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -51,20 +55,66 @@ public class SudokuGUI extends JFrame {
 		setVisible(true);
 	}
 	
+	public JPanel setBoard() {
+		
+		boardArray = new Cell[9][9];
+		
+		JPanel board = new JPanel();
+		board.setLayout(new GridLayout(9, 9, 1, 1));
+		
+		for (int col = 0; col < 9; col++){
+			for (int row = 0; row < 9; row++) {
+				boardArray[col][row] = new Cell();
+				board.add(boardArray[col][row]);
+			}
+		}
+		
+		return board;
+	}
+	
+	public JPanel setNumButtons() {
+
+		JPanel numbers = new JPanel();
+		numbers.setLayout(new GridLayout(3, 3));
+
+		JButton one = new JButton("1");
+		JButton two = new JButton("2");
+		JButton three = new JButton("3");
+		JButton four = new JButton("4");
+		JButton five = new JButton("5");
+		JButton six = new JButton("6");
+		JButton seven = new JButton("7");
+		JButton eight = new JButton("8");
+		JButton nine = new JButton("9");
+		
+		numbers.add(one);
+		numbers.add(two);
+		numbers.add(three);
+		numbers.add(four);
+		numbers.add(five);
+		numbers.add(six);
+		numbers.add(seven);
+		numbers.add(eight);
+		numbers.add(nine);
+
+		return numbers;
+
+	}
+
 	/**
 	 * 
 	 * @return A JPanel that creates all the buttons
 	 */
 	public JPanel setButtons() {
 		JPanel buttons = new JPanel();
-		
+
 		JButton New = new JButton("New");
 		JButton GetHint = new JButton("Get Hint");
 		JButton Check = new JButton("Check");
 		buttons.add(New);
 		buttons.add(GetHint);
 		buttons.add(Check);
-		
+
 		return buttons;
 	}
 
