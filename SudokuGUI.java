@@ -1,13 +1,20 @@
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
+import java.text.ParseException;
 
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JFormattedTextField;
+import javax.swing.text.DefaultFormatterFactory;
+import javax.swing.text.MaskFormatter;
+
 
 /**
  * The GUI Class to hold everything for the sudoku puzzle
@@ -58,15 +65,24 @@ public class SudokuGUI extends JFrame {
 	}
 	
 	public JPanel setBoard() {
-		
-		boardArray = new Cell[9][9];
-		
+				
 		JPanel board = new JPanel();
 		board.setLayout(new GridLayout(9, 9, 1, 1));
 		
 		for (int col = 0; col < 9; col++){
 			for (int row = 0; row < 9; row++) {
+				
 				boardArray[col][row] = new JFormattedTextField();
+				//JFormattedTextField properties
+				boardArray[col][row].setHorizontalAlignment(javax.swing.JTextField.CENTER);
+				boardArray[col][row].setBorder(BorderFactory.createLineBorder(Color.GRAY));
+				boardArray[col][row].setPreferredSize(new Dimension(35, 35));
+				boardArray[col][row].setFont(new Font("Lucida Console", Font.BOLD, 18));
+				
+				try {
+					boardArray[col][row].setFormatterFactory(new DefaultFormatterFactory(new MaskFormatter("#")));
+		        } catch (java.text.ParseException ex) {}
+				
 				board.add(boardArray[col][row]);
 			}
 		}
@@ -78,7 +94,8 @@ public class SudokuGUI extends JFrame {
 
 		JPanel numbers = new JPanel();
 		numbers.setLayout(new GridLayout(3, 3));
-
+		
+		//will change this later to be more like in the telephone example
 		JButton one = new JButton("1");
 		JButton two = new JButton("2");
 		JButton three = new JButton("3");
@@ -126,6 +143,7 @@ public class SudokuGUI extends JFrame {
 				//want to out
 				String number = Integer.toString(board.getNumber(col, row));
 				boardArray[col][row].setText(number);
+				boardArray[0][0].setText("9");
 			}
 		}
 	}
