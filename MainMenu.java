@@ -1,51 +1,66 @@
 import javax.swing.*;
-import java.awt.*;
 
-public class MainMenu extends JPanel{  
-    private JButton newGame, setting, hiscore;
-    private JLabel title;
-    private GridBagConstraints gbc = new GridBagConstraints();
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class MainMenu extends JFrame{  
+
+	private static final long serialVersionUID = 1L;
 
     public MainMenu() {
-
-        setLayout(new GridBagLayout());
-
+    	
+    	JPanel but = buttons();
+    	add(but);
+    	
+    	//Set JFrame Properties
+    	setLayout(new FlowLayout(FlowLayout.CENTER));
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		pack();
+		Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
+		setLocation((d.width / 2 - 110), (d.height / 2 - 110));
+		setResizable(true);
+		setVisible(true);
+    }
+    
+    public JPanel buttons() {
+    	JPanel button = new JPanel();
+    	button.setLayout(new GridBagLayout());
+    	GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5,5,5,5);
 
-        title = new JLabel("Soduku Solver");
+        JLabel title = new JLabel("Soduku Solver");
         gbc.gridx = 0;
         gbc.gridy = 0;
-        add(title,gbc);
+        button.add(title,gbc);
 
-        newGame = new JButton("New Game");
+        JButton newGame = new JButton("New Game");
         gbc.gridx = 0;
         gbc.gridy = 1;
         gbc.gridwidth = 2;
         gbc.fill = GridBagConstraints.BOTH;
-        add(newGame,gbc);
+        newGame.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent event) {
+				//add something
+				new SudokuGUI();
+				dispose();
+		    }
+		});
+        button.add(newGame,gbc);
 
-        setting = new JButton("Setting");
+        JButton setting = new JButton("Setting");
         gbc.gridx = 0;
         gbc.gridy = 3;
         gbc.gridwidth = 1;
-        add(setting,gbc);
+        button.add(setting,gbc);
 
-        hiscore = new JButton("High Score");
+        JButton hiscore = new JButton("High Score");
         gbc.gridx = 1;
         gbc.gridy = 3;
         gbc.gridwidth = 1;
-        add(hiscore,gbc);
-
+        button.add(hiscore,gbc);
+        
+    	return button;
     }
-
-    /*public static void main(String[] args){  
-        GridBagLayoutDemo t = new GridBagLayoutDemo();
-        JFrame jf = new JFrame();
-
-        jf.setTitle("Tutorial");
-        jf.setSize(460,600);
-        jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        jf.setVisible(true);
-        jf.add(t);
-    } */
 }  
