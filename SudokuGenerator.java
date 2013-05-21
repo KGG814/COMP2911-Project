@@ -153,4 +153,8 @@ public class SudokuGenerator {
 		board.setNumber(col, row, currentTemp);
 		return true;
 	}
+
+	SudokuBoard getBoard() {
+		return board;
+	}
 }
