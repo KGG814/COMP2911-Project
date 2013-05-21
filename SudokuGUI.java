@@ -46,7 +46,7 @@ public class SudokuGUI extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		pack();
 		Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
-		setLocation((d.width / 2 - 175), (d.height / 2 - 275));
+		setLocation((d.width / 2 - 275), (d.height / 2 - 275));
 		setResizable(true);
 		setVisible(true);
 	}
@@ -66,6 +66,8 @@ public class SudokuGUI extends JFrame {
 		{
 			public void actionPerformed(ActionEvent event) {
 				//add something
+				new SudokuGUI();
+				dispose();
 		    }
 		});
 		
