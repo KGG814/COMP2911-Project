@@ -1,4 +1,3 @@
-
 public class SudokuBoard {
 		
 	int[][] boardArray;
@@ -11,7 +10,7 @@ public class SudokuBoard {
 		this.boardArray = boardArray;
 	}
 	void setNumber (int col, int row, int number) {
-		boardArray[col][row] = number;;
+		boardArray[col][row] = number;
 	}
 
 	int getNumber (int col, int row) {
