@@ -38,7 +38,7 @@ public class MainMenu extends JPanel{
 
     }
 
-    public static void main(String[] args){  
+    /*public static void main(String[] args){  
         GridBagLayoutDemo t = new GridBagLayoutDemo();
         JFrame jf = new JFrame();
 
@@ -47,5 +47,5 @@ public class MainMenu extends JPanel{
         jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         jf.setVisible(true);
         jf.add(t);
-    }  
+    } */
 }  
