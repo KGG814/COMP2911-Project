@@ -1,22 +1,26 @@
 COMP2911-Project
 ================
 
-Please add stuff and/or tag your name when you're doing something.
+22/5/13
 
-8/5/2013 
+Daniel
+- Differentiate Numbers (auto generated and inputted)
+- Colour red if wrong for some difficulties
+- Get Hint - gets a random box that is not filled from the solved sudoku and saves it into their board
+- Limit the amount of hints (changed for each difficulty)
+- Images: Help make some images and insert them into GUI.
 
-Daniel: Fix Up GUI and relate GUI to our initial representation of the board (i.e solved array list with GUI). Have GUI display the values in its cell array.
+Kalana
+- Solve Button: Displays  new window with the solution.
+- Timer: Multithreading, When a board is completed and correct save score into textfile
+- Continue: Save current board into a textfile. Have a Continue button on main menu.
+- pressing this buttton allows you to continue with saved board.
+- If there is not continue file/board the button will be grey and unable to be pressed
 
-Kalana: Get SudokuSolutions and SudokuGenerator Working
-
-Chad: Start Main GUI Layout, without implementation so set Buttons with Labels but no actions. Design some pictures. 
-
-Have GUI display the values in its cell array
-
-Class diagrams
-
-Menu system
-
-Highscore system
-
-Think of new ideas for GUI
+Chad
+- Settings: Open a new window with settings. 
+- Settings should allow: Changes in font and background colour. As well as change difficulty.
+- These settings should be saved into a textfile to be stored and loaded
+- Images: Images to make it look nice and appealing. For Main Menu and BoardGUI
+- High Score: Should open a new window that has a list of past high scores.
+- Should read in a file of past high scores. 
