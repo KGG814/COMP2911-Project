@@ -8,13 +8,9 @@ public class Cell extends JLabel {
   
 	private static final long serialVersionUID = 1L;
 	private boolean editable;
-	private final int col;
-	private final int row;
 
-	public Cell(int x, int y) {
+	public Cell() {
 		this.editable = true;
-		this.col = x;
-		this.row = y;
 		setHorizontalAlignment(JTextField.CENTER);
 		setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY));
 		setPreferredSize(new Dimension(40, 40));
@@ -30,13 +26,5 @@ public class Cell extends JLabel {
 	
 	public boolean getEditable() {
 		return editable;
-	}
-	
-	public int getCol() {
-		return col;
-	}
-	
-	public int getRow() {
-		return row;
 	}
 }
