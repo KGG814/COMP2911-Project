@@ -23,6 +23,7 @@ public class SudokuGUI extends JFrame {
 	 */
 	private static final long serialVersionUID = 1L;
 	JLabel[][] boardArray;
+	private BoardGUI sudokuBoard;
 	
 	/**
 	 * Puts everything on the JFrame
@@ -34,7 +35,7 @@ public class SudokuGUI extends JFrame {
 		JPanel panel = new JPanel();
 		//panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
 
-		JPanel sudokuBoard = new BoardGUI();
+		sudokuBoard = new BoardGUI();
 		JPanel buttons = setButtons();
 		
 		panel.add(sudokuBoard);
@@ -57,7 +58,7 @@ public class SudokuGUI extends JFrame {
 	 */
 	public JPanel setButtons() {
 		JPanel buttons = new JPanel();
-		buttons.setLayout(new GridLayout(2, 9, 10, 10));
+		buttons.setLayout(new GridLayout(3, 2, 10, 10));
 		Dimension size = new Dimension(90, 40);
 		
 		JButton New = new JButton("New");
@@ -79,19 +80,40 @@ public class SudokuGUI extends JFrame {
 				//add something
 		    }
 		});
-
-		JButton Check = new JButton("Check");
-		Check.setPreferredSize(size);
-		Check.addActionListener(new ActionListener()
+		
+		JButton Undo = new JButton("Undo");
+		Undo.setPreferredSize(size);
+		Undo.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent event) {
+				//add something
+				sudokuBoard.deleteCell();
+		    }
+		});	
+		
+		JButton Solve = new JButton("Solve");
+		Solve.setPreferredSize(size);
+		Solve.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent event) {
 				//add something
 		    }
 		});
 		
+		JButton Options = new JButton("Options");
+		Options.setPreferredSize(size);
+		Options.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent event) {
+				//add something
+		    }
+		});	
+		
 		buttons.add(New);
 		buttons.add(GetHint);
-		buttons.add(Check);
+		buttons.add(Undo);
+		buttons.add(Solve);
+		buttons.add(Options);
 
 		return buttons;
 	}
