@@ -12,7 +12,7 @@ import javax.swing.JPanel;
 
 public class BoardGUI extends JPanel {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 	Cell[][] board;
 	private Cell chosenCell;
 	
@@ -92,37 +92,31 @@ public class BoardGUI extends JPanel {
 	            }
 	        });
 	    }
-
-        // add delete button
-        final JButton delButton = new JButton("Delete");
-        numbers.add(delButton);
-        delButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent event){
-                chosenCell.setBackground(Color.WHITE);
-                chosenCell.setText("");
-                chosenCell.setEditable(true);
-            }
-        });
-        //
-
-        return numbers;
-    }
-
-    public void populateCell (int x, int y, int number) {
-        if(board[x][y].getEditable() == true) {
-            String num = Integer.toString(number);
-            board[x][y].setText(num);
-        }
-    }
-
-    public void populateBoard (SudokuBoard sudoku) {
-        for (int col = 0; col<9; col++) {
-            for (int row = 0; row<9; row++){
-                //want to out
-                String number = Integer.toString(sudoku.getNumber(col, row));
-                board[col][row].setText(number);
-            }
-        }
-    }
+	    
+		return numbers;
+	}
+	
+	public void deleteCell() {
+		chosenCell.setText("");
+		chosenCell.setEditable(true);
+		chosenCell = new Cell();
+	}
+	
+	public void populateCell (int x, int y, int number) {
+		if(board[x][y].getEditable() == true) {
+			String num = Integer.toString(number);
+			board[x][y].setText(num);
+		}
+	}
+	
+	public void populateBoard (SudokuBoard sudoku) {
+		for (int col = 0; col<9; col++) {
+			for (int row = 0; row<9; row++){
+				//want to out
+				String number = Integer.toString(sudoku.getNumber(col, row));
+				board[col][row].setText(number);
+			}
+		}
+	}
 
 }
