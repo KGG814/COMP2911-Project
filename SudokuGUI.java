@@ -1,121 +1,125 @@
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 
+public class BoardGUI extends JPanel {
 
-/**
- * The GUI Class to hold everything for the sudoku puzzle
- * which includes the sudoku board, buttons and images if
- * we want
- *
- */
-public class SudokuGUI extends JFrame {
-
-	
-	/**
-	 * For some reason I have to put an ID
-	 */
 	private static final long serialVersionUID = 1L;
-	JLabel[][] boardArray;
-	private BoardGUI sudokuBoard;
+	Cell[][] board;
+	private Cell nothingCell;
+	private Cell chosenCell;
 	
-	/**
-	 * Puts everything on the JFrame
-	 */
-	public SudokuGUI() {
-
-		boardArray = new JLabel[9][9];
+	public BoardGUI() {
+		board = new Cell[9][9];
+		nothingCell = new Cell(-1, -1);
+		chosenCell = nothingCell;
 		
-		JPanel panel = new JPanel();
-		//panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
-
-		sudokuBoard = new BoardGUI();
-		JPanel buttons = setButtons();
+		JPanel squares = createSquares();
+		JPanel buttons = createNumButtons();
+		add(squares);
+		add(buttons);
 		
-		panel.add(sudokuBoard);
-		panel.add(buttons);
-		add(panel);
-		
-		//Set JFrame Properties
-		setLayout(new FlowLayout(FlowLayout.CENTER));
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		pack();
+		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
-		setLocation((d.width / 2 - 275), (d.height / 2 - 275));
-		setResizable(true);
+		setLocation((d.width / 2 - 175), (d.height / 2 - 275));
 		setVisible(true);
 	}
+	
+	public JPanel createSquares() {
+		JPanel squares = new JPanel();
+		squares.setLayout(new GridLayout(9, 9, 1, 1));
+		
+		for(int col = 0 ; col < 9; col++) {
+			for(int row = 0; row < 9; row++) {
+				board[col][row] = new Cell(col, row);
+				squares.add(board[col][row]);
+				board[col][row].addMouseListener(new MouseListener() {
 
-	/**
-	 * 
-	 * @return A JPanel that creates all the buttons
-	 */
-	public JPanel setButtons() {
-		JPanel buttons = new JPanel();
-		buttons.setLayout(new GridLayout(3, 2, 10, 10));
-		Dimension size = new Dimension(90, 40);
-		
-		JButton New = new JButton("New");
-		New.setPreferredSize(size);
-		New.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent event) {
-				//add something
-				new SudokuGUI();
-				dispose();
-		    }
-		});
-		
-		JButton GetHint = new JButton("Get Hint");
-		GetHint.setPreferredSize(size);
-		GetHint.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent event) {
-				//add something
-		    }
-		});
-		
-		JButton Undo = new JButton("Undo");
-		Undo.setPreferredSize(size);
-		Undo.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent event) {
-				//add something
-				sudokuBoard.deleteCell();
-		    }
-		});	
-		
-		JButton Solve = new JButton("Solve");
-		Solve.setPreferredSize(size);
-		Solve.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent event) {
-				//add something
-		    }
-		});
-		
-		JButton Options = new JButton("Options");
-		Options.setPreferredSize(size);
-		Options.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent event) {
-				//add something
-		    }
-		});	
-		
-		buttons.add(New);
-		buttons.add(GetHint);
-		buttons.add(Undo);
-		buttons.add(Solve);
-		buttons.add(Options);
+					@Override
+					public void mouseClicked(MouseEvent e) {
+					}
 
-		return buttons;
+					@Override
+					public void mouseEntered(MouseEvent e) {
+					}
+
+					@Override
+					public void mouseExited(MouseEvent e) {
+					}
+
+					@Override
+					public void mousePressed(MouseEvent e) {
+						chosenCell.setBackground(Color.WHITE);
+						chosenCell = (Cell) e.getSource();
+						chosenCell.setBackground(Color.CYAN);
+					}
+
+					@Override
+					public void mouseReleased(MouseEvent e) {
+					}
+					
+				});
+			}
+		}
+		
+		return squares;
+	}
+	
+	public JPanel createNumButtons() {
+		JPanel numbers = new JPanel();
+		numbers.setLayout(new GridLayout(1, 1, 1, 1));
+		numbers.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
+
+		String keyLabels = "123456789";
+	    for (int i = 0; i < keyLabels.length(); i++) {
+	    	final String label = keyLabels.substring(i, i + 1);
+	        final JButton keyButton = new JButton(label);
+	        numbers.add(keyButton);
+	        keyButton.addActionListener(new ActionListener()
+	        {
+	        	public void actionPerformed(ActionEvent event) {
+	        		if(chosenCell.getEditable()) {
+	        			chosenCell.setBackground(Color.WHITE);
+	        			chosenCell.setText(keyButton.getText());
+						chosenCell.setEditable(false);
+	        		}
+	            }
+	        });
+	    }
+	    
+		return numbers;
+	}
+	
+	public void deleteCell() {
+		chosenCell.setBackground(Color.WHITE);
+		chosenCell.setText("");
+		chosenCell.setEditable(true);
+		chosenCell = nothingCell;
+	}
+	
+	public void populateCell (int x, int y, int number) {
+		if(board[x][y].getEditable() == true) {
+			String num = Integer.toString(number);
+			board[x][y].setText(num);
+		}
+	}
+	
+	public void populateBoard (SudokuBoard sudoku) {
+		for (int col = 0; col<9; col++) {
+			for (int row = 0; row<9; row++){
+				//want to out
+				String number = Integer.toString(sudoku.getNumber(col, row));
+				board[col][row].setText(number);
+			}
+		}
 	}
 
 }
