@@ -4,7 +4,6 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 
@@ -17,20 +16,17 @@ import javax.swing.JPanel;
  */
 public class SudokuGUI extends JFrame {
 
-    
+	
 	/**
 	 * For some reason I have to put an ID
 	 */
 	private static final long serialVersionUID = 1L;
-	JLabel[][] boardArray;
 	private BoardGUI sudokuBoard;
 	
 	/**
 	 * Puts everything on the JFrame
 	 */
 	public SudokuGUI() {
-
-		boardArray = new JLabel[9][9];
 		
 		JPanel panel = new JPanel();
 		//panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
