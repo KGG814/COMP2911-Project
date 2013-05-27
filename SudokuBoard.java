@@ -1,3 +1,11 @@
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
+
 public class SudokuBoard {
 		
 	int[][] boardArray;
@@ -65,5 +73,20 @@ public class SudokuBoard {
 			}
 			System.out.print("\n");
 		}
+	}
+	
+	public void saveState() throws IOException {
+		File save = new File("save.txt");
+		FileWriter writer = new FileWriter(save,false);
+		for (int row = 0; row < 9; row++) {
+			for (int col = 0; col < 9; col++) {
+				Integer currentNum = new Integer(boardArray[col][row]);
+				String output = currentNum.toString();
+				writer.write(output);
+				writer.write(" ");
+			}
+			writer.write("\n");
+		}
+		writer.close();
 	}
 }

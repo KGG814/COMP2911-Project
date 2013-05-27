@@ -1,5 +1,7 @@
+import java.io.IOException;
+
 public class SudokuTester {
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		SudokuGenerator generator = new SudokuGenerator(1);
 		generator.GenerateSolvableSudoku();
 		generator.solution.printBoard();
