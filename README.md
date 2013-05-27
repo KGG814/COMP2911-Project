@@ -11,7 +11,6 @@ Daniel
 - Images: Help make some images and insert them into GUI.
 
 Kalana
-- Solve Button: Displays  new window with the solution.
 - Timer: Multithreading, When a board is completed and correct save score into textfile
 - Continue: Have a Continue button on main menu.
 - pressing this buttton allows you to continue with saved board.

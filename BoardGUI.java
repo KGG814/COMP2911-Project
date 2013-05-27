@@ -26,15 +26,32 @@ public class BoardGUI extends JPanel {
 		generator = new SudokuGenerator(1);
 		generator.GenerateSolvableSudoku();
 		sudokuBoard = generator.getBoard();
-		
-		JPanel squares = createSquares();
-		JPanel buttons = createNumButtons();
+		sudokuBoard.printBoard();
+		System.out.print("\n");
+		JPanel squares = createSquares();	
 		add(squares);
+		JPanel buttons = createNumButtons();
 		add(buttons);		
-		
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
 		setLocation((d.width / 2 - 175), (d.height / 2 - 275));
+		populateBoard(sudokuBoard);
+		setVisible(true);
+	}
+	
+	public BoardGUI(SudokuBoard solution) {
+		board = new Cell[9][9];
+		nothingCell = new Cell(-1, -1);
+		chosenCell = nothingCell;
+		sudokuBoard = solution;
+		sudokuBoard.printBoard();
+		System.out.print("\n");
+		JPanel squares = createSquares();		
+		add(squares);	
+		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
+		setLocation((d.width / 2 - 175), (d.height / 2 - 275));
+		populateBoard(sudokuBoard);
 		setVisible(true);
 	}
 	
@@ -75,6 +92,12 @@ public class BoardGUI extends JPanel {
 			}
 		}
 		
+		return squares;
+	}
+	
+	public JPanel createSquaresSolution() {
+		JPanel squares = new JPanel();
+		squares.setLayout(new GridLayout(9, 9, 1, 1));
 		return squares;
 	}
 	
@@ -127,5 +150,8 @@ public class BoardGUI extends JPanel {
 			}
 		}
 	}
-
+	
+	public SudokuBoard getSolution () {
+		return generator.solution;
+	}
 }

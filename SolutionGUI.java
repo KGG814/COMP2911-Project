@@ -1,35 +1,41 @@
-import java.awt.Dimension;
-import java.awt.GridLayout;
-import java.awt.Toolkit;
-import javax.swing.BoxLayout;
+import java.awt.FlowLayout;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 
-public class SolutionGUI extends JPanel {
+public class SolutionGUI extends JFrame {
 	private static final long serialVersionUID = 1L;
-	Cell[][] board;
+	private BoardGUI solutionBoard;
+	private SudokuBoard solution;
 	
-	public SolutionGUI() {
-		board = new Cell[9][9];		
-		JPanel squares = createSquares();
-		add(squares);
-		
-		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
-		setLocation((d.width / 2 - 175), (d.height / 2 - 275));
+	public SolutionGUI(SudokuBoard solution) {
+		JPanel panel = new JPanel();
+		//panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
+		solutionBoard = new BoardGUI(solution);
+		panel.add(solutionBoard);
+		add(panel);	
+		//Set JFrame Properties
+		setLayout(new FlowLayout(FlowLayout.CENTER));
+		addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent we) {
+                dispose();
+            }
+        });
+		this.solution = solution;
+		pack();
+		setResizable(false);
 		setVisible(true);
 	}
-
-	public JPanel createSquares() {
-		JPanel squares = new JPanel();
-		squares.setLayout(new GridLayout(9, 9, 1, 1));
-		
-		for(int col = 0 ; col < 9; col++) {
-			for(int row = 0; row < 9; row++) {
-				board[col][row] = new Cell(col, row);
-				squares.add(board[col][row]);	
+	
+	public void populateBoard () {
+		for (int col = 0; col<9; col++) {
+			for (int row = 0; row<9; row++){
+				//want to out
+				String number = Integer.toString(solution.getNumber(col, row));
+				solutionBoard.board[col][row].setText(number);
 			}
 		}
-		return squares;
 	}
 }

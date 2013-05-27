@@ -22,7 +22,7 @@ public class SudokuGUI extends JFrame {
 	 */
 	private static final long serialVersionUID = 1L;
 	private BoardGUI sudokuBoard;
-	
+	private SolutionGUI currentSolution;
 	/**
 	 * Puts everything on the JFrame
 	 */
@@ -105,12 +105,26 @@ public class SudokuGUI extends JFrame {
 		    }
 		});	
 		
+		JButton Solution = new JButton("Solution");
+		Solution.setPreferredSize(size);
+		Solution.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent event) {
+				if (currentSolution!=null) {
+					currentSolution.dispose();
+				}
+				currentSolution = new SolutionGUI(sudokuBoard.getSolution());
+				
+		    }
+		});
+		
 		buttons.add(New);
 		buttons.add(GetHint);
 		buttons.add(Undo);
 		buttons.add(Solve);
 		buttons.add(Options);
-
+		buttons.add(Solution);
+		
 		return buttons;
 	}
 
