@@ -59,7 +59,7 @@ public class SudokuGenerator {
 		if (difficulty<3) {
 			//Random
 			while (canBeDug(isJumping)) {
-				boolean currentCanBeDug =true;
+				boolean currentCanBeDug = true;
 				int row = 0;
 				int col = 0;
 				while (currentCanBeDug==true) {
@@ -68,7 +68,6 @@ public class SudokuGenerator {
 					currentCanBeDug = hasBeenDug[col][row];
 				}
 				if(boardNumber>minPuzzle&&digLegal(col,row)) {
-					
 					if (isValidDig(col,row)) {
 						boardNumber--;
 						board.setNumber(col, row, 0);
@@ -76,17 +75,53 @@ public class SudokuGenerator {
 				}
 				hasBeenDug[col][row] = true;
 			}
-		//TODO Other difficulties
 		} else if (difficulty==3) {
+			// Jump one Cell
 			isJumping = true;
 			if (canBeDug(isJumping)) {
-				
-			}
-			 
+				for (int row = 0; row < 9; row++) {
+					int initialCol;
+					if (row%2==0) {
+						initialCol = 0;
+						for (int col = initialCol; col < 9; col=col+2) {
+							if (isValidDig(col,row)) {
+								boardNumber--;
+								board.setNumber(col, row, 0);
+							}
+						}	
+					} else {
+						initialCol = 7;
+						for (int col = initialCol; col > 0; col=col-2) {
+							if (isValidDig(col,row)) {
+								boardNumber--;
+								board.setNumber(col, row, 0);
+							}
+						}
+					}	
+				}
+			}			 
 		} else if (difficulty==4) {
-			//S
 			if (canBeDug(isJumping)) {
-				
+				for (int row = 0; row < 9; row++) {
+					int initialCol;
+					if (row%2==0) {
+						initialCol = 0;
+						for (int col = initialCol; col < 9; col++) {
+							if (isValidDig(col,row)) {
+								boardNumber--;
+								board.setNumber(col, row, 0);
+							}
+						}	
+					} else {
+						initialCol = 8;
+						for (int col = initialCol; col >= 0; col--) {
+							if (isValidDig(col,row)) {
+								boardNumber--;
+								board.setNumber(col, row, 0);
+							}
+						}
+					}	
+				}
 			}
 		}
 	}

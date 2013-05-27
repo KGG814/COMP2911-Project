@@ -43,7 +43,7 @@ public class SudokuSolver {
 	
 	private void solve (int col, int row) throws Exception {
 		runCount++;
-		if (runCount>1000) {
+		if (runCount>40000) {
 			System.out.println("Solution not found");
 			throw fail;
 		}
