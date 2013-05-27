@@ -13,7 +13,7 @@ Daniel
 Kalana
 - Solve Button: Displays  new window with the solution.
 - Timer: Multithreading, When a board is completed and correct save score into textfile
-- Continue: Save current board into a textfile. Have a Continue button on main menu.
+- Continue: Have a Continue button on main menu.
 - pressing this buttton allows you to continue with saved board.
 - If there is not continue file/board the button will be grey and unable to be pressed
 
