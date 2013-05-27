@@ -14,16 +14,23 @@ public class BoardGUI extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	Cell[][] board;
+	private Cell nothingCell;
 	private Cell chosenCell;
+	private SudokuGenerator generator;
+	private SudokuBoard sudokuBoard; 
 	
 	public BoardGUI() {
 		board = new Cell[9][9];
-		chosenCell = new Cell();
+		nothingCell = new Cell(-1, -1);
+		chosenCell = nothingCell;
+		generator = new SudokuGenerator(1);
+		generator.GenerateSolvableSudoku();
+		sudokuBoard = generator.getBoard();
 		
 		JPanel squares = createSquares();
 		JPanel buttons = createNumButtons();
 		add(squares);
-		add(buttons);
+		add(buttons);		
 		
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
@@ -37,7 +44,7 @@ public class BoardGUI extends JPanel {
 		
 		for(int col = 0 ; col < 9; col++) {
 			for(int row = 0; row < 9; row++) {
-				board[col][row] = new Cell();
+				board[col][row] = new Cell(col, row);
 				squares.add(board[col][row]);
 				board[col][row].addMouseListener(new MouseListener() {
 
@@ -88,6 +95,7 @@ public class BoardGUI extends JPanel {
 	        			chosenCell.setBackground(Color.WHITE);
 	        			chosenCell.setText(keyButton.getText());
 						chosenCell.setEditable(false);
+						sudokuBoard.setNumber(chosenCell.getCol(), chosenCell.getRow(), Integer.parseInt(keyButton.getText()));
 	        		}
 	            }
 	        });
@@ -97,9 +105,10 @@ public class BoardGUI extends JPanel {
 	}
 	
 	public void deleteCell() {
+		chosenCell.setBackground(Color.WHITE);
 		chosenCell.setText("");
 		chosenCell.setEditable(true);
-		chosenCell = new Cell();
+		chosenCell = nothingCell;
 	}
 	
 	public void populateCell (int x, int y, int number) {
