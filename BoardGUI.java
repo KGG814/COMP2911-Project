@@ -160,4 +160,18 @@ public class BoardGUI extends JPanel {
 	public SudokuBoard getSolution () {
 		return generator.solution;
 	}
+	
+	public boolean checkSolution() {
+		SudokuBoard solutions = generator.solution;
+		
+		for(int i = 0; i < 9; i++) {
+			for(int j = 0; j < 9; j++) {
+				if(solutions.getNumber(i, j) != sudokuBoard.getNumber(i, j)) {
+					return false;
+				}
+			}
+		}
+		
+		return true;
+	}
 }
