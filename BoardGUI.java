@@ -18,27 +18,31 @@ public class BoardGUI extends JPanel {
 	private Cell chosenCell;
 	private SudokuGenerator generator;
 	private SudokuBoard sudokuBoard; 
-	
-	public BoardGUI() {
+	private int difficulty;
+
+	public BoardGUI(int difficulty) {
 		board = new Cell[9][9];
 		nothingCell = new Cell(-1, -1);
 		chosenCell = nothingCell;
-		generator = new SudokuGenerator(1);
+		this.difficulty = difficulty;
+		generator = new SudokuGenerator(difficulty);
 		generator.GenerateSolvableSudoku();
 		sudokuBoard = generator.getBoard();
 		sudokuBoard.printBoard();
 		System.out.print("\n");
+		
 		JPanel squares = createSquares();	
 		add(squares);
 		JPanel buttons = createNumButtons();
-		add(buttons);		
+		add(buttons);	
+		
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
 		setLocation((d.width / 2 - 175), (d.height / 2 - 275));
 		populateBoard(sudokuBoard);
 		setVisible(true);
 	}
-	
+
 	public BoardGUI(SudokuBoard solution) {
 		board = new Cell[9][9];
 		nothingCell = new Cell(-1, -1);
@@ -54,11 +58,11 @@ public class BoardGUI extends JPanel {
 		populateBoard(sudokuBoard);
 		setVisible(true);
 	}
-	
+
 	public JPanel createSquares() {
 		JPanel squares = new JPanel();
 		squares.setLayout(new GridLayout(9, 9, 1, 1));
-		
+
 		for(int col = 0 ; col < 9; col++) {
 			for(int row = 0; row < 9; row++) {
 				board[col][row] = new Cell(col, row);
@@ -87,20 +91,20 @@ public class BoardGUI extends JPanel {
 					@Override
 					public void mouseReleased(MouseEvent e) {
 					}
-					
+
 				});
 			}
 		}
-		
+
 		return squares;
 	}
-	
+
 	public JPanel createSquaresSolution() {
 		JPanel squares = new JPanel();
 		squares.setLayout(new GridLayout(9, 9, 1, 1));
 		return squares;
 	}
-	
+
 	public JPanel createNumButtons() {
 		JPanel numbers = new JPanel();
 		numbers.setLayout(new GridLayout(1, 1, 1, 1));
@@ -115,42 +119,44 @@ public class BoardGUI extends JPanel {
 	        {
 	        	public void actionPerformed(ActionEvent event) {
 	        		if(chosenCell.getEditable()) {
-	        			chosenCell.setBackground(Color.WHITE);
 	        			chosenCell.setText(keyButton.getText());
-						chosenCell.setEditable(false);
 						sudokuBoard.setNumber(chosenCell.getCol(), chosenCell.getRow(), Integer.parseInt(keyButton.getText()));
+	        			if(difficulty == 1 && generator.solution.getNumber(chosenCell.getCol(), chosenCell.getRow()) != Integer.parseInt(keyButton.getText())) {
+	        				chosenCell.setBackground(Color.RED);
+	        			} else {
+	        				chosenCell.setBackground(Color.WHITE);
+	        			}
+						chosenCell = nothingCell;
 	        		}
 	            }
 	        });
 	    }
-	    
+
 		return numbers;
 	}
-	
+
 	public void deleteCell() {
-		chosenCell.setBackground(Color.WHITE);
-		chosenCell.setText("");
-		chosenCell.setEditable(true);
-		chosenCell = nothingCell;
-	}
-	
-	public void populateCell (int x, int y, int number) {
-		if(board[x][y].getEditable() == true) {
-			String num = Integer.toString(number);
-			board[x][y].setText(num);
+		if(chosenCell.getEditable()) {
+		   chosenCell.setBackground(Color.WHITE);
+		   chosenCell.setText("");
+		   chosenCell.setEditable(true);
+		   chosenCell = nothingCell;
 		}
 	}
-	
+
 	public void populateBoard (SudokuBoard sudoku) {
 		for (int col = 0; col<9; col++) {
 			for (int row = 0; row<9; row++){
 				//want to out
 				String number = Integer.toString(sudoku.getNumber(col, row));
-				board[col][row].setText(number);
+				if(!number.equals("0")) {
+					board[col][row].setText(number);
+					board[col][row].setEditable(false);
+				}
 			}
 		}
 	}
-	
+
 	public SudokuBoard getSolution () {
 		return generator.solution;
 	}
