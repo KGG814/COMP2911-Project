@@ -3,6 +3,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.Random;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -119,6 +120,7 @@ public class BoardGUI extends JPanel {
 	        {
 	        	public void actionPerformed(ActionEvent event) {
 	        		if(chosenCell.getEditable()) {
+	        			chosenCell.setFont(new Font("Lucida Console", Font.BOLD, 18));
 	        			chosenCell.setText(keyButton.getText());
 						sudokuBoard.setNumber(chosenCell.getCol(), chosenCell.getRow(), Integer.parseInt(keyButton.getText()));
 	        			if(difficulty == 1 && generator.solution.getNumber(chosenCell.getCol(), chosenCell.getRow()) != Integer.parseInt(keyButton.getText())) {
@@ -173,5 +175,21 @@ public class BoardGUI extends JPanel {
 		}
 		
 		return true;
+	}
+	
+	public void displayHint() {
+		Random numGenerator = new Random();
+		int col = numGenerator.nextInt(9);
+		int row = numGenerator.nextInt(9);
+		String number = Integer.toString(sudokuBoard.getNumber(col, row));
+		
+		while(!number.equals("0")) {
+			col = numGenerator.nextInt(9);
+			row = numGenerator.nextInt(9);
+			number = Integer.toString(sudokuBoard.getNumber(col, row));
+		}
+		
+		board[col][row].setText(Integer.toString(generator.solution.getNumber(col, row)));
+		board[col][row].setFont(new Font("Lucida Console", Font.BOLD, 9));
 	}
 }
