@@ -24,6 +24,7 @@ public class SudokuGUI extends JFrame {
 	private BoardGUI sudokuBoard;
 	private SolutionGUI currentSolution;
 	private int difficulty;
+	private int hints;
 	/**
 	 * Puts everything on the JFrame
 	 */
@@ -32,6 +33,7 @@ public class SudokuGUI extends JFrame {
 		JPanel panel = new JPanel();
 		//panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
 		this.difficulty = difficulty;
+		hints = 2*difficulty;
 		sudokuBoard = new BoardGUI(difficulty);
 		JPanel buttons = setButtons();
 
@@ -74,7 +76,10 @@ public class SudokuGUI extends JFrame {
 		GetHint.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent event) {
-				//add something
+				if(hints != 0) {
+					sudokuBoard.displayHint();
+					hints--;
+				}
 		    }
 		});
 
