@@ -29,7 +29,8 @@ public class MainMenu extends JFrame{
     	GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5,5,5,5);
 
-        JLabel title = new JLabel("Soduku Solver");
+        ImageIcon titleImg = new ImageIcon(getClass().getResource("ui/title.png"));
+        JLabel title = new JLabel(titleImg);
         gbc.gridx = 0;
         gbc.gridy = 0;
         button.add(title,gbc);

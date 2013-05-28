@@ -9,13 +9,13 @@ public class HighList {
      * Construct list of high scores via input file.
      * @param saved input file.
      */
-    HighList(String[] saved) {
+    HighList() {
         list = new ArrayList<HighListItem>();
         min = 1000000; // INIT with large magic num
         try {
             String name;
             int score;
-            Scanner s = new Scanner(new FileReader(saved[0]));
+            Scanner s = new Scanner(new FileReader("HighScores"));
             while(s.hasNext()) {
                 name = s.next();
                 score = s.nextInt();
@@ -27,6 +27,7 @@ public class HighList {
         } catch( FileNotFoundException e) {
             e.printStackTrace();
         }
+        this.enList();
     }
 
     /**
@@ -41,6 +42,7 @@ public class HighList {
             this.list.add(N);
             if(I.getScore() < min) min = I.getScore();
         }
+        this.enList();
     }
 
     /**
@@ -67,9 +69,11 @@ public class HighList {
             return "List Empty.";
         } else {
             String msg = "";
+            // msg += "<html><body><ol>";
             for(HighListItem I : list){
                 msg += I.getRecord();
             }
+            // msg += "</ol></body></html>";
             return msg;
         }
     }
