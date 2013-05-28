@@ -11,12 +11,9 @@ public class HighListItem implements Cloneable {
 
     public String getRecord() {
         String result = "";
-        // result += "<li>";
         result += name;
-        // result += "<br />";
-        result += "\n";
+        result += " - ";
         result += score;
-        // result += "</li>";
         result += "\n";
         return result;
     }

@@ -44,6 +44,9 @@ public class HighGUI extends JFrame {
         return button;
     }
 
+    /**
+     * main method only for debugging
+     */
     public static void main(String[] args) {
         new HighGUI();
     }

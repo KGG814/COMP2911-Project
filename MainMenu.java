@@ -10,15 +10,16 @@ public class MainMenu extends JFrame{
 
     public MainMenu() {
     	
+    	//Set JFrame Properties
+    	setLayout(new FlowLayout(FlowLayout.CENTER));
     	JPanel but = buttons();
     	add(but);
     	
-    	//Set JFrame Properties
-    	setLayout(new FlowLayout(FlowLayout.CENTER));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		pack();
+        setSize(400,600);
 		Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
-		setLocation((d.width / 2 - 110), (d.height / 2 - 110));
+		setLocation((d.width / 2 - 200), (d.height / 2 - 300));
 		setResizable(true);
 		setVisible(true);
     }
@@ -33,6 +34,7 @@ public class MainMenu extends JFrame{
         JLabel title = new JLabel(titleImg);
         gbc.gridx = 0;
         gbc.gridy = 0;
+        gbc.gridwidth = 2;
         button.add(title,gbc);
 
         JButton newGame = new JButton("New Game");
@@ -60,6 +62,14 @@ public class MainMenu extends JFrame{
         gbc.gridx = 1;
         gbc.gridy = 3;
         gbc.gridwidth = 1;
+        hiscore.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent event) {
+				//add something
+				new HighGUI();
+				//dispose();
+		    }
+		});
         button.add(hiscore,gbc);
         
     	return button;

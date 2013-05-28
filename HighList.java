@@ -12,9 +12,9 @@ public class HighList {
     HighList() {
         list = new ArrayList<HighListItem>();
         min = 1000000; // INIT with large magic num
+        String name;
+        int score;
         try {
-            String name;
-            int score;
             Scanner s = new Scanner(new FileReader("HighScores"));
             while(s.hasNext()) {
                 name = s.next();
@@ -70,8 +70,12 @@ public class HighList {
         } else {
             String msg = "";
             // msg += "<html><body><ol>";
+            int i = 1;
             for(HighListItem I : list){
+                msg += i;
+                msg += ". ";
                 msg += I.getRecord();
+                i++;
             }
             // msg += "</ol></body></html>";
             return msg;
