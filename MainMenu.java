@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 public class MainMenu extends JFrame{  
 
 	private static final long serialVersionUID = 1L;
+	private SettingGUI settings;
 
     public MainMenu() {
     	
@@ -45,8 +46,11 @@ public class MainMenu extends JFrame{
         newGame.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent event) {
-				//add something
-				new SudokuGUI();
+				if(settings == null) {
+					new SudokuGUI(1);
+				} else {
+					new SudokuGUI(settings.getDifficulty());
+				}
 				dispose();
 		    }
 		});
@@ -55,7 +59,13 @@ public class MainMenu extends JFrame{
         JButton setting = new JButton("Setting");
         gbc.gridx = 0;
         gbc.gridy = 3;
-        gbc.gridwidth = 1;
+        gbc.gridwidth = 1;        
+        setting.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent event) {
+				settings = new SettingGUI();
+		    }
+		});
         button.add(setting,gbc);
 
         JButton hiscore = new JButton("High Score");
@@ -65,9 +75,7 @@ public class MainMenu extends JFrame{
         hiscore.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent event) {
-				//add something
 				new HighGUI();
-				//dispose();
 		    }
 		});
         button.add(hiscore,gbc);
