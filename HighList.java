@@ -14,12 +14,14 @@ public class HighList {
         min = 1000000; // INIT with large magic num
         String name;
         int score;
+        int difficulty;
         try {
             Scanner s = new Scanner(new FileReader("HighScores"));
             while(s.hasNext()) {
                 name = s.next();
                 score = s.nextInt();
-                HighListItem r = new HighListItem(name,score);
+                difficulty = s.nextInt();
+                HighListItem r = new HighListItem(name,score,difficulty);
                 // System.out.println(r.getRecord());
                 this.list.add(r);
                 if(score < min) min = score;
@@ -58,11 +60,20 @@ public class HighList {
         }
     }
 
+    /**
+     * add new record to the high score list.
+     */
+    public void addToList(String name, int score, int difficulty) {
+        HighListItem i = new HighListItem(name,score,difficulty);
+        this.list.add(i);
+        this.enList();
+    }
+
     public ArrayList<HighListItem> getList() { return list; } 
     public int getMin() { return min; }
 
     /**
-     * Return list rankings.
+     * @return sorted list information.
      */
     public String getMsg() {
         if(list.isEmpty()) {
