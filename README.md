@@ -17,9 +17,21 @@ Kalana
 - If there is not continue file/board the button will be grey and unable to be pressed
 
 Chad
-- Settings: Open a new window with settings. 
-- Settings should allow: Changes in font and background colour. As well as change difficulty.
+- Settings should allow: Changes in font and background colour.
 - These settings should be saved into a textfile to be stored and loaded
 - Images: Images to make it look nice and appealing. For Main Menu and BoardGUI
 - High Score: Should open a new window that has a list of past high scores.
 - Should read in a file of past high scores. 
+- 
+
+29/5/13
+Write Comments
+Do UML diagram for your classes the Combine later.
+Appearance
+Background/Image for board.
+timer
+Success or fail message. When success made new window and input name. Save score
+Continue
+Save Settings
+
+
