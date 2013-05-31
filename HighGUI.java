@@ -1,5 +1,6 @@
 import java.awt.*;
 import java.awt.event.*;
+
 import javax.swing.*;
 
 public class HighGUI extends JFrame {
@@ -8,19 +9,23 @@ public class HighGUI extends JFrame {
 
     public HighGUI() {
 
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent we) {
+                dispose();
+            }
+        });
         pack();
         Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
-        setLocation((d.width / 2 - 200), (d.height / 2 - 300));
-        setResizable(true);
-        setVisible(true);
+        setLocation((d.width / 2), (d.height / 2 - 275));
+		setResizable(true);
+		setVisible(true);
         setSize(400,600);
-        JPanel but = buttons();
-        add(but,BorderLayout.SOUTH);
+//        JPanel but = buttons();
+//        add(but,BorderLayout.SOUTH);
         drawList dl = new drawList();
         add(dl,BorderLayout.CENTER);
     }
-
+/*
     public JPanel buttons() {
         JPanel button = new JPanel();
         button.setLayout(new GridBagLayout());
@@ -34,8 +39,6 @@ public class HighGUI extends JFrame {
         gbc.fill = GridBagConstraints.BOTH;
         toHome.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
-                //add something
-                new MainMenu();
                 dispose();
             }
         });
@@ -43,11 +46,5 @@ public class HighGUI extends JFrame {
 
         return button;
     }
-
-    /**
-     * main method only for debugging
-     */
-    public static void main(String[] args) {
-        new HighGUI();
-    }
+*/
 }
