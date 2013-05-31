@@ -3,6 +3,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.IOException;
 import java.util.Random;
 
 import javax.swing.BorderFactory;
@@ -19,6 +20,7 @@ public class BoardGUI extends JPanel {
 	private Cell chosenCell;
 	private SudokuGenerator generator;
 	private SudokuBoard sudokuBoard; 
+	private SudokuBoard solution;
 	private int difficulty;
 
 	public BoardGUI(int difficulty) {
@@ -29,7 +31,33 @@ public class BoardGUI extends JPanel {
 		generator = new SudokuGenerator(difficulty);
 		generator.GenerateSolvableSudoku();
 		sudokuBoard = generator.getBoard();
+		solution = generator.solution;
 		sudokuBoard.printBoard();
+		System.out.print("\n");
+		
+		JPanel squares = createSquares();	
+		add(squares);
+		JPanel buttons = createNumButtons();
+		add(buttons);	
+		
+		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
+		setLocation((d.width / 2 - 175), (d.height / 2 - 275));
+		populateBoard(sudokuBoard);
+		setVisible(true);
+	}
+	
+	public BoardGUI(int[][] boardArray, int difficulty) {
+		board = new Cell[9][9];
+		nothingCell = new Cell(-1, -1);
+		chosenCell = nothingCell;
+		this.difficulty = difficulty;
+		generator = null;
+		sudokuBoard = new SudokuBoard(boardArray);
+		sudokuBoard.printBoard();
+		SudokuSolver solver = new SudokuSolver(sudokuBoard);
+		solver.runSolve();
+		solution = solver.getSolution();
 		System.out.print("\n");
 		
 		JPanel squares = createSquares();	
@@ -170,11 +198,11 @@ public class BoardGUI extends JPanel {
 	}
 
 	public SudokuBoard getSolution () {
-		return generator.solution;
+		return solution;
 	}
 	
 	public boolean checkSolution() {
-		SudokuBoard solutions = generator.solution;
+		SudokuBoard solutions = solution;
 		
 		for(int i = 0; i < 9; i++) {
 			for(int j = 0; j < 9; j++) {
@@ -199,7 +227,11 @@ public class BoardGUI extends JPanel {
 			number = Integer.toString(sudokuBoard.getNumber(col, row));
 		}
 		
-		board[col][row].setText(Integer.toString(generator.solution.getNumber(col, row)));
+		board[col][row].setText(Integer.toString(solution.getNumber(col, row)));
 		board[col][row].setForeground(Color.MAGENTA);
+	}
+	
+	public void save () throws IOException {
+		sudokuBoard.saveState(difficulty);
 	}
 }

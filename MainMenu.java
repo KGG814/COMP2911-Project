@@ -39,11 +39,38 @@ public class MainMenu extends JFrame{
         gbc.gridy = 0;
         gbc.gridwidth = 2;
         button.add(title,gbc);
+        
+        JButton continueGame = new JButton("Continue Game");
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        gbc.gridwidth = 2;
+        gbc.fill = GridBagConstraints.BOTH;
+        continueGame.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent event) {
+				File f = new File("save.txt");
+				if(f.exists()) {
+					System.out.println("Continue");
+					ContinueFileParser c = new ContinueFileParser(f);
+					try {
+						c.Parse();
+					} catch (FileNotFoundException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					new SudokuGUI(c.getBoardArray(), c.getDifficulty());
+					dispose();
+				} else {
+					//Do nothing
+				}
+		    }
+		});
+        button.add(continueGame,gbc);
 
         JButton newGame = new JButton("New Game");
         gbc.gridx = 0;
         gbc.gridy = 1;
-        gbc.gridwidth = 2;
+        gbc.gridwidth = 4;
         gbc.fill = GridBagConstraints.BOTH;
         newGame.addActionListener(new ActionListener()
 		{
@@ -64,7 +91,7 @@ public class MainMenu extends JFrame{
 
         JButton setting = new JButton("Setting");
         gbc.gridx = 0;
-        gbc.gridy = 3;
+        gbc.gridy = 5;
         gbc.gridwidth = 1;      
         setting.addActionListener(new ActionListener()
 		{
@@ -80,7 +107,7 @@ public class MainMenu extends JFrame{
 
         JButton hiscore = new JButton("High Score");
         gbc.gridx = 1;
-        gbc.gridy = 3;
+        gbc.gridy = 5;
         gbc.gridwidth = 1;
         hiscore.addActionListener(new ActionListener()
 		{

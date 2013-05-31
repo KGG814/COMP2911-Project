@@ -1,6 +1,7 @@
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -52,14 +53,36 @@ public class SudokuGUI extends JFrame {
 		setVisible(true);
 	}
 
+	public SudokuGUI(int[][] boardArray, int difficulty) {
+
+		JPanel panel = new JPanel();
+		//panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
+		this.difficulty = difficulty;
+		hints = 2*difficulty;
+		sudokuBoard = new BoardGUI(boardArray, difficulty);
+		JPanel buttons = setButtons();
+
+		panel.add(sudokuBoard);
+		panel.add(buttons);
+		add(panel);
+
+		//Set JFrame Properties
+		setLayout(new FlowLayout(FlowLayout.CENTER));
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		pack();
+		Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
+		setLocation((d.width / 2 - 275), (d.height / 2 - 275));
+		setResizable(true);
+		setVisible(true);
+	}
 	/**
 	 * 
 	 * @return A JPanel that creates all the buttons
 	 */
 	public JPanel setButtons() {
 		JPanel buttons = new JPanel();
-		buttons.setLayout(new GridLayout(3, 2, 10, 10));
-		Dimension size = new Dimension(90, 40);
+		buttons.setLayout(new GridLayout(4, 2, 10, 10));
+		Dimension size = new Dimension(120, 40);
 
 		JButton New = new JButton("New");
 		New.setPreferredSize(size);
@@ -135,6 +158,20 @@ public class SudokuGUI extends JFrame {
 		    }
 		});
 		
+		JButton Save = new JButton("Save");
+		Save.setPreferredSize(size);
+		Save.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent event) {
+				try {
+					sudokuBoard.save();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		    }
+		});
+		
 		//buttons.add(numHints);
 		buttons.add(New);
 		buttons.add(GetHint);
@@ -142,6 +179,7 @@ public class SudokuGUI extends JFrame {
 		buttons.add(Solve);
 		buttons.add(Solution);
 		buttons.add(Back);
+		buttons.add(Save);
 
 		return buttons;
 	}

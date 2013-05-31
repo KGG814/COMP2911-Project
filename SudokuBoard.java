@@ -78,10 +78,14 @@ public class SudokuBoard {
 		}
 	}
 
-	public void saveState() throws IOException {
+	public void saveState(int difficulty) throws IOException {
 		File save = new File("save.txt");
-		FileWriter writer = new FileWriter(save,false);
-		for (int row = 0; row < 9; row++) {
+		save.createNewFile();
+		FileWriter writer = new FileWriter(save);
+		Integer difficultyInteger = (Integer)difficulty;
+		writer.write(difficultyInteger.toString());
+		writer.write("\n");
+		for (int row = 8; row >= 0; row--) {
 			for (int col = 0; col < 9; col++) {
 				Integer currentNum = new Integer(boardArray[col][row]);
 				String output = currentNum.toString();
