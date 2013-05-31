@@ -4,16 +4,17 @@ import java.io.IOException;
 
 
 public class SudokuBoard {
-		
+
 	int[][] boardArray;
-	
+
 	public SudokuBoard() {
 		boardArray = new int[9][9];
 	}
-	
+
 	public SudokuBoard(int[][] boardArray) {
 		this.boardArray = boardArray;
 	}
+	
 	void setNumber (int col, int row, int number) {
 		boardArray[col][row] = number;
 	}
@@ -21,7 +22,7 @@ public class SudokuBoard {
 	int getNumber (int col, int row) {
 		return boardArray[col][row];
 	}
-	
+
 	boolean isLegalRow (int row, int num) {
 		for (int col = 0; col<9; col++){
 			if (boardArray[col][row]==num){
@@ -38,9 +39,9 @@ public class SudokuBoard {
 			}
 		}
 		return true;
-		
+
 	}
-	
+
 	boolean isLegalBox (int row, int col, int num) {
 		row = (row / 3) * 3 ;
 		col = (col / 3) * 3 ;
@@ -53,15 +54,20 @@ public class SudokuBoard {
 		}
 		return true;
 	}
-	
+
 	boolean numberIsLegal (int row, int col, int num) {
+		//System.out.println(row);
+		//System.out.println(col);
+		System.out.println(isLegalCol(col,num));
+		System.out.println(isLegalRow(row,num));
+		System.out.println(isLegalBox(row,col,num));
 		if (isLegalRow(row,num)&&isLegalCol(col,num)&&isLegalBox(row,col,num)) {
 			return true;
 		} else {
 			return false;
 		}
 	}
-	
+
 	public void printBoard() {
 		for (int row=8; row>=0;row--){
 			for (int col=0; col<9;col++){
@@ -71,7 +77,7 @@ public class SudokuBoard {
 			System.out.print("\n");
 		}
 	}
-	
+
 	public void saveState() throws IOException {
 		File save = new File("save.txt");
 		FileWriter writer = new FileWriter(save,false);
