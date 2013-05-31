@@ -1,5 +1,6 @@
 import java.awt.*;
 import java.awt.event.*;
+
 import javax.swing.*;
 
 public class SettingGUI extends JFrame {
@@ -9,12 +10,16 @@ public class SettingGUI extends JFrame {
     
     public SettingGUI() {
 
-      JPanel butt = buttons();
+    	JPanel butt = buttons();
     	add(butt);
     	this.difficulty = 1;
     	
 		setLayout(new FlowLayout(FlowLayout.CENTER));
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent we) {
+                dispose();
+            }
+        });
 		pack();
 		Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
 		setLocation((d.width / 2 - 275), (d.height / 2 - 275));
@@ -67,17 +72,16 @@ public class SettingGUI extends JFrame {
         });
         button.add(three, gbc);
         
-        JButton toHome = new JButton("Main menu");
-        gbc.gridx = 0;
-        gbc.gridy = 1;
+        JButton four = new JButton("4");
+        gbc.gridx = 8;
+        gbc.gridy = 0;
         gbc.gridwidth = 2;
-        toHome.addActionListener(new ActionListener() {
+        four.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
-                dispose();
+                difficulty = 4;
             }
         });
-        
-        button.add(toHome,gbc);
+        button.add(four, gbc);
 
         return button;
     }
