@@ -9,7 +9,7 @@ public class SolutionGUI extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private BoardGUI solutionBoard;
 	private SudokuBoard solution;
-	
+
 	public SolutionGUI(SudokuBoard solution) {
 		JPanel panel = new JPanel();
 		//panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
@@ -28,7 +28,7 @@ public class SolutionGUI extends JFrame {
 		setResizable(false);
 		setVisible(true);
 	}
-	
+
 	public void populateBoard () {
 		for (int col = 0; col<9; col++) {
 			for (int row = 0; row<9; row++){
