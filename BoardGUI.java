@@ -64,8 +64,8 @@ public class BoardGUI extends JPanel {
 		JPanel squares = new JPanel();
 		squares.setLayout(new GridLayout(9, 9, 1, 1));
 
-		for(int col = 0 ; col < 9; col++) {
-			for(int row = 0; row < 9; row++) {
+		for(int row = 8 ; row >= 0; row--) {
+			for(int col = 0; col < 9; col++) {
 				board[col][row] = new Cell(col, row);
 				squares.add(board[col][row]);
 				board[col][row].addMouseListener(new MouseListener() {
@@ -122,11 +122,20 @@ public class BoardGUI extends JPanel {
 	        		if(chosenCell.getEditable()) {
 	        			chosenCell.setFont(new Font("Lucida Console", Font.BOLD, 18));
 	        			chosenCell.setText(keyButton.getText());
-						sudokuBoard.setNumber(chosenCell.getCol(), chosenCell.getRow(), Integer.parseInt(keyButton.getText()));
-	        			if(difficulty == 1 && generator.solution.getNumber(chosenCell.getCol(), chosenCell.getRow()) != Integer.parseInt(keyButton.getText())) {
-	        				chosenCell.setBackground(Color.RED);
-	        			} else {
-	        				chosenCell.setBackground(Color.WHITE);
+	        			if(chosenCell != nothingCell) {
+	        				if(difficulty == 1) {
+	        					//check box, column and row
+	        					if (!sudokuBoard.numberIsLegal(chosenCell.getRow(), chosenCell.getCol(), 
+	        												  Integer.parseInt(keyButton.getText()))) {
+	        						chosenCell.setForeground(Color.RED);
+	        						chosenCell.setBackground(Color.WHITE);
+	        					} else {
+	        						chosenCell.setForeground(Color.BLACK);
+	        						chosenCell.setBackground(Color.WHITE);
+	        					}
+		        				sudokuBoard.setNumber(chosenCell.getCol(), chosenCell.getRow(), Integer.parseInt(keyButton.getText()));
+
+	        				}
 	        			}
 						chosenCell = nothingCell;
 	        		}
@@ -153,6 +162,7 @@ public class BoardGUI extends JPanel {
 				String number = Integer.toString(sudoku.getNumber(col, row));
 				if(!number.equals("0")) {
 					board[col][row].setText(number);
+					board[col][row].setForeground(Color.GRAY);
 					board[col][row].setEditable(false);
 				}
 			}
@@ -190,6 +200,6 @@ public class BoardGUI extends JPanel {
 		}
 		
 		board[col][row].setText(Integer.toString(generator.solution.getNumber(col, row)));
-		board[col][row].setFont(new Font("Lucida Console", Font.BOLD, 9));
+		board[col][row].setForeground(Color.MAGENTA);
 	}
 }
