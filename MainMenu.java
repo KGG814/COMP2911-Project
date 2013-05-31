@@ -1,5 +1,6 @@
 import javax.swing.*;
-
+import java.io.*;
+import java.util.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -8,6 +9,7 @@ public class MainMenu extends JFrame{
 
 	private static final long serialVersionUID = 1L;
 	private SettingGUI settings;
+	private HighGUI highscores;
 
     public MainMenu() {
     	
@@ -18,7 +20,7 @@ public class MainMenu extends JFrame{
     	
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		pack();
-        setSize(400,600);
+        setSize(400,350);
 		Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
 		setLocation((d.width / 2 - 200), (d.height / 2 - 300));
 		setResizable(true);
@@ -30,8 +32,8 @@ public class MainMenu extends JFrame{
     	button.setLayout(new GridBagLayout());
     	GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5,5,5,5);
-
-        ImageIcon titleImg = new ImageIcon(getClass().getResource("ui/title.png"));
+        
+        ImageIcon titleImg = new ImageIcon("ui/title.png");
         JLabel title = new JLabel(titleImg);
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -50,6 +52,10 @@ public class MainMenu extends JFrame{
 					new SudokuGUI(1);
 				} else {
 					new SudokuGUI(settings.getDifficulty());
+					settings.dispose();
+					if(highscores != null) {
+						highscores.dispose();
+					}
 				}
 				dispose();
 		    }
@@ -59,11 +65,15 @@ public class MainMenu extends JFrame{
         JButton setting = new JButton("Setting");
         gbc.gridx = 0;
         gbc.gridy = 3;
-        gbc.gridwidth = 1;        
+        gbc.gridwidth = 1;      
         setting.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent event) {
+				if (settings!=null) {
+					settings.dispose();
+				}
 				settings = new SettingGUI();
+
 		    }
 		});
         button.add(setting,gbc);
@@ -75,7 +85,11 @@ public class MainMenu extends JFrame{
         hiscore.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent event) {
-				new HighGUI();
+				if (highscores!=null) {
+					highscores.dispose();
+				}
+				highscores = new HighGUI();
+
 		    }
 		});
         button.add(hiscore,gbc);
