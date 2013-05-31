@@ -12,8 +12,6 @@ Daniel
 
 Kalana
 - Timer: Multithreading, When a board is completed and correct save score into textfile
-- Continue: Have a Continue button on main menu.
-- pressing this buttton allows you to continue with saved board.
 - If there is not continue file/board the button will be grey and unable to be pressed
 
 Chad
