@@ -4,6 +4,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 
@@ -70,7 +71,10 @@ public class SudokuGUI extends JFrame {
 				dispose();
 		    }
 		});
+		
+		//JLabel numHints = new JLabel("Hints:");
 
+		//put display for number of hints left
 		JButton GetHint = new JButton("Get Hint");
 		GetHint.setPreferredSize(size);
 		GetHint.addActionListener(new ActionListener()
@@ -93,14 +97,17 @@ public class SudokuGUI extends JFrame {
 		    }
 		});	
 
-		JButton Solve = new JButton("Solve");
+		JButton Solve = new JButton("Check");
 		Solve.setPreferredSize(size);
 		Solve.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent event) {
 				//add something
 				if (sudokuBoard.checkSolution()) {
-					dispose();
+					//instead of dispose call the saveRecord if it is correct
+					//open new window and have textfield to save name.
+					JFrame success = new JFrame();
+					success.setVisible(true);
 				}
 		    }
 		});
@@ -128,6 +135,7 @@ public class SudokuGUI extends JFrame {
 		    }
 		});
 		
+		//buttons.add(numHints);
 		buttons.add(New);
 		buttons.add(GetHint);
 		buttons.add(Delete);
