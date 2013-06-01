@@ -23,13 +23,11 @@ Chad
 - 
 
 29/5/13
-Write Comments
-Do UML diagram for your classes the Combine later.
-Appearance
-Background/Image for board.
-timer
-Success or fail message. When success made new window and input name. Save score
-Continue
-Save Settings
-
-
+- Write Comments
+- Do UML diagram for your classes the Combine later.
+- Appearance
+- Background/Image for board.
+- timer
+- Success or fail message. When success made new window and input name. Save score
+- Continue
+- Save Settings
