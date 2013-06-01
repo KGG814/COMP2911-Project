@@ -53,19 +53,19 @@ public class SudokuGUI extends JFrame {
 		setVisible(true);
 	}
 
-	public SudokuGUI(int[][] boardArray, int difficulty) {
+	public SudokuGUI(int[][] boardArray, int difficulty, int[][] editableArray) {
 
 		JPanel panel = new JPanel();
 		//panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
 		this.difficulty = difficulty;
 		hints = 2*difficulty;
-		sudokuBoard = new BoardGUI(boardArray, difficulty);
+		sudokuBoard = new BoardGUI(boardArray, difficulty, editableArray);
 		JPanel buttons = setButtons();
 
 		panel.add(sudokuBoard);
 		panel.add(buttons);
 		add(panel);
-
+		
 		//Set JFrame Properties
 		setLayout(new FlowLayout(FlowLayout.CENTER));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

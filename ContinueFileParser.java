@@ -7,10 +7,11 @@ public class ContinueFileParser {
 	File f;
 	private int difficulty;
 	private int[][] boardArray;
-	
+	private int[][] editableArray;
 	ContinueFileParser (File f) {
 		this.f = f;
 		boardArray = new int[9][9];
+		editableArray = new int[9][9];
 	}
 	
 	void Parse () throws FileNotFoundException {
@@ -19,6 +20,11 @@ public class ContinueFileParser {
 		for (int row = 8; row >=0; row--) {
 			for (int col = 0; col < 9; col++) {
 				boardArray[col][row] = in.nextInt();
+			}
+		}
+		for (int row = 8; row >=0; row--) {
+			for (int col = 0; col < 9; col++) {
+				editableArray[col][row] = in.nextInt();
 			}
 		}
 		in.close();
@@ -30,5 +36,9 @@ public class ContinueFileParser {
 	
 	int[][] getBoardArray () {
 		return boardArray;
+	}
+	
+	int[][] getEditableArray() {
+		return editableArray;
 	}
 }

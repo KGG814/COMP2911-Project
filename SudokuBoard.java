@@ -34,6 +34,7 @@ public class SudokuBoard {
 
 	boolean isLegalCol (int col, int num) {
 		for (int row = 0; row<9; row++){
+			System.out.print(col);
 			if (boardArray[col][row]==num){
 				return false;
 			}
@@ -56,12 +57,10 @@ public class SudokuBoard {
 	}
 
 	boolean numberIsLegal (int row, int col, int num) {
-		//System.out.println(row);
-		//System.out.println(col);
-		System.out.println(isLegalCol(col,num));
-		System.out.println(isLegalRow(row,num));
-		System.out.println(isLegalBox(row,col,num));
+		System.out.println(num);
 		if (isLegalRow(row,num)&&isLegalCol(col,num)&&isLegalBox(row,col,num)) {
+			return true;
+		} else if (num==0){
 			return true;
 		} else {
 			return false;
@@ -78,7 +77,7 @@ public class SudokuBoard {
 		}
 	}
 
-	public void saveState(int difficulty) throws IOException {
+	public void saveState(int difficulty, boolean[][] editableArray) throws IOException {
 		File save = new File("save.txt");
 		save.createNewFile();
 		FileWriter writer = new FileWriter(save);
@@ -89,6 +88,20 @@ public class SudokuBoard {
 			for (int col = 0; col < 9; col++) {
 				Integer currentNum = new Integer(boardArray[col][row]);
 				String output = currentNum.toString();
+				writer.write(output);
+				writer.write(" ");
+			}
+			writer.write("\n");
+		}
+		for (int row = 8; row >= 0; row--) {
+			for (int col = 0; col < 9; col++) {
+				String output;
+				boolean editable = editableArray[col][row];
+				if (editable) {
+					output = "1";
+				} else {
+					output = "0";
+				}		
 				writer.write(output);
 				writer.write(" ");
 			}

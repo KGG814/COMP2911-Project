@@ -58,7 +58,7 @@ public class MainMenu extends JFrame{
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					new SudokuGUI(c.getBoardArray(), c.getDifficulty());
+					new SudokuGUI(c.getBoardArray(), c.getDifficulty(),c.getEditableArray());
 					dispose();
 				} else {
 					//Do nothing

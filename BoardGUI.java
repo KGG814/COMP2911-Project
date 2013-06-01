@@ -33,13 +33,11 @@ public class BoardGUI extends JPanel {
 		sudokuBoard = generator.getBoard();
 		solution = generator.solution;
 		sudokuBoard.printBoard();
-		System.out.print("\n");
-		
+		System.out.print("\n");		
 		JPanel squares = createSquares();	
 		add(squares);
 		JPanel buttons = createNumButtons();
 		add(buttons);	
-		
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
 		setLocation((d.width / 2 - 175), (d.height / 2 - 275));
@@ -47,7 +45,7 @@ public class BoardGUI extends JPanel {
 		setVisible(true);
 	}
 	
-	public BoardGUI(int[][] boardArray, int difficulty) {
+	public BoardGUI(int[][] boardArray, int difficulty, int[][] editableArray) {
 		board = new Cell[9][9];
 		nothingCell = new Cell(-1, -1);
 		chosenCell = nothingCell;
@@ -59,7 +57,6 @@ public class BoardGUI extends JPanel {
 		solver.runSolve();
 		solution = solver.getSolution();
 		System.out.print("\n");
-		
 		JPanel squares = createSquares();	
 		add(squares);
 		JPanel buttons = createNumButtons();
@@ -69,6 +66,22 @@ public class BoardGUI extends JPanel {
 		Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
 		setLocation((d.width / 2 - 175), (d.height / 2 - 275));
 		populateBoard(sudokuBoard);
+		for (int col = 0; col < 9; col++) {
+			for (int row = 0; row < 9; row++) {
+				boolean status;
+				if (editableArray[col][row]==1) {
+					status = true;
+					if (!sudokuBoard.numberIsLegal(row, col, 
+							  boardArray[col][row])) {
+						board[col][row].setForeground(Color.RED);
+						board[col][row].setBackground(Color.WHITE);
+					}
+				} else {
+					status = false ;
+				}
+				board[col][row].setEditable(status);
+			}
+		}
 		setVisible(true);
 	}
 
@@ -232,6 +245,12 @@ public class BoardGUI extends JPanel {
 	}
 	
 	public void save () throws IOException {
-		sudokuBoard.saveState(difficulty);
+		boolean[][] editableArray = new boolean[9][9];
+		for (int col = 0; col < 9; col++) {
+			for (int row = 0; row < 9; row++) {
+				editableArray[col][row] = board[col][row].getEditable();
+			}
+		}
+		sudokuBoard.saveState(difficulty, editableArray);
 	}
 }

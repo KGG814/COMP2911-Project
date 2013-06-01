@@ -26,6 +26,9 @@ public class Cell extends JLabel {
 	
 	public void setEditable(boolean status) {
 		editable = status;
+		if(!status) {
+			setForeground(Color.GRAY);
+		}
 	}
 	
 	public boolean getEditable() {
