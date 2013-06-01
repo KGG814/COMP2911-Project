@@ -16,7 +16,7 @@ public class HighList {
         int score;
         int difficulty;
         try {
-            Scanner s = new Scanner(new FileReader("HighScores"));
+            Scanner s = new Scanner(new FileReader("HighScores.txt"));
             while(s.hasNext()) {
                 name = s.next();
                 score = s.nextInt();
@@ -26,6 +26,7 @@ public class HighList {
                 this.list.add(r);
                 if(score < min) min = score;
             }
+            s.close();
         } catch( FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -52,7 +53,7 @@ public class HighList {
      */
     public void saveRecord() {
         try {
-            FileWriter f = new FileWriter("HighScores");
+            FileWriter f = new FileWriter("HighScores.txt");
             f.write(this.getMsg());
             f.close();
         } catch( Exception e ){
@@ -77,7 +78,7 @@ public class HighList {
      */
     public String getMsg() {
         if(list.isEmpty()) {
-            return "List Empty.";
+            return "No High Scores";
         } else {
             String msg = "";
             // msg += "<html><body><ol>";
