@@ -33,18 +33,20 @@ public class BoardGUI extends JPanel {
 		sudokuBoard = generator.getBoard();
 		solution = generator.solution;
 		sudokuBoard.printBoard();
-		System.out.print("\n");		
+		System.out.print("\n");
+
 		JPanel squares = createSquares();	
 		add(squares);
 		JPanel buttons = createNumButtons();
 		add(buttons);	
+
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
 		setLocation((d.width / 2 - 175), (d.height / 2 - 275));
 		populateBoard(sudokuBoard);
 		setVisible(true);
 	}
-	
+
 	public BoardGUI(int[][] boardArray, int difficulty, int[][] editableArray) {
 		board = new Cell[9][9];
 		nothingCell = new Cell(-1, -1);
@@ -57,11 +59,12 @@ public class BoardGUI extends JPanel {
 		solver.runSolve();
 		solution = solver.getSolution();
 		System.out.print("\n");
+
 		JPanel squares = createSquares();	
 		add(squares);
 		JPanel buttons = createNumButtons();
 		add(buttons);	
-		
+
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
 		setLocation((d.width / 2 - 175), (d.height / 2 - 275));
@@ -104,6 +107,7 @@ public class BoardGUI extends JPanel {
 	public JPanel createSquares() {
 		JPanel squares = new JPanel();
 		squares.setLayout(new GridLayout(9, 9, 1, 1));
+    	squares.setBackground(new Color(255, 231, 186));
 
 		for(int row = 8 ; row >= 0; row--) {
 			for(int col = 0; col < 9; col++) {
@@ -149,13 +153,15 @@ public class BoardGUI extends JPanel {
 
 	public JPanel createNumButtons() {
 		JPanel numbers = new JPanel();
-		numbers.setLayout(new GridLayout(1, 1, 1, 1));
+		numbers.setLayout(new GridLayout(1, 1, 3, 1));
 		numbers.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
+    	numbers.setBackground(new Color(255, 231, 186));
 
 		String keyLabels = "123456789";
 	    for (int i = 0; i < keyLabels.length(); i++) {
 	    	final String label = keyLabels.substring(i, i + 1);
 	        final JButton keyButton = new JButton(label);
+	        keyButton.setFont(new Font("Arial", Font.BOLD, 15));
 	        numbers.add(keyButton);
 	        keyButton.addActionListener(new ActionListener()
 	        {
@@ -213,10 +219,10 @@ public class BoardGUI extends JPanel {
 	public SudokuBoard getSolution () {
 		return solution;
 	}
-	
+
 	public boolean checkSolution() {
 		SudokuBoard solutions = solution;
-		
+
 		for(int i = 0; i < 9; i++) {
 			for(int j = 0; j < 9; j++) {
 				if(solutions.getNumber(i, j) != sudokuBoard.getNumber(i, j)) {
@@ -224,26 +230,28 @@ public class BoardGUI extends JPanel {
 				}
 			}
 		}
-		
+
 		return true;
 	}
-	
+
 	public void displayHint() {
 		Random numGenerator = new Random();
 		int col = numGenerator.nextInt(9);
 		int row = numGenerator.nextInt(9);
 		String number = Integer.toString(sudokuBoard.getNumber(col, row));
-		
+
 		while(!number.equals("0")) {
 			col = numGenerator.nextInt(9);
 			row = numGenerator.nextInt(9);
 			number = Integer.toString(sudokuBoard.getNumber(col, row));
 		}
-		
+
+		sudokuBoard.setNumber(col, row, solution.getNumber(col, row));
 		board[col][row].setText(Integer.toString(solution.getNumber(col, row)));
 		board[col][row].setForeground(Color.MAGENTA);
+		board[col][row].setEditable(false);
 	}
-	
+
 	public void save () throws IOException {
 		boolean[][] editableArray = new boolean[9][9];
 		for (int col = 0; col < 9; col++) {
