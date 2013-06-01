@@ -1,6 +1,6 @@
 import javax.swing.*;
+
 import java.io.*;
-import java.util.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -8,28 +8,36 @@ import java.awt.event.ActionListener;
 public class MainMenu extends JFrame{  
 
 	private static final long serialVersionUID = 1L;
+	private MainMenu main;
 	private SettingGUI settings;
 	private HighGUI highscores;
 
     public MainMenu() {
     	
-    	//Set JFrame Properties
-    	setLayout(new FlowLayout(FlowLayout.CENTER));
-    	JPanel but = buttons();
-    	add(but);
-    	
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+     	//Set JFrame Properties
+    	this.main = this;
+    	setLayout(new BorderLayout());
+		setContentPane(new JLabel(new ImageIcon("ui/b2.jpg")));	
+		setLayout(new FlowLayout(FlowLayout.CENTER));
+    	JPanel menu = Menu();
+    	menu.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY));
+    	add(menu, BorderLayout.CENTER);
+
+    	setTitle("Interactive Sudoku");
+    	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		pack();
-        setSize(400,350);
+        setSize(460,400);
 		Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
-		setLocation((d.width / 2 - 200), (d.height / 2 - 300));
+		setLocation((d.width / 2 - 230), (d.height / 2 - 230));
 		setResizable(true);
 		setVisible(true);
+
     }
     
-    public JPanel buttons() {
-    	JPanel button = new JPanel();
-    	button.setLayout(new GridBagLayout());
+    public JPanel Menu() {
+    	JPanel buttons = new JPanel();
+    	buttons.setLayout(new GridBagLayout());
+    	buttons.setBackground(new Color(255, 231, 186));
     	GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5,5,5,5);
         
@@ -38,13 +46,37 @@ public class MainMenu extends JFrame{
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.gridwidth = 2;
-        button.add(title,gbc);
-        
-        JButton continueGame = new JButton("Continue Game");
+        buttons.add(title,gbc);
+
+        JButton newGame = new JButton("New Game");
+        newGame.setFont(new Font("Arial", Font.BOLD, 17));
         gbc.gridx = 0;
         gbc.gridy = 2;
         gbc.gridwidth = 2;
-        gbc.fill = GridBagConstraints.BOTH;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        newGame.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent event) {
+				if(settings == null) {
+					new SudokuGUI(1, main);
+				} else {
+					new SudokuGUI(settings.difficulty, main);
+					settings.setVisible(false);
+					if(highscores != null) {
+						highscores.setVisible(false);
+					}
+				}
+				setVisible(false);
+		    }
+		});
+        buttons.add(newGame,gbc);
+        
+        JButton continueGame = new JButton("Continue Game");
+        continueGame.setFont(new Font("Arial", Font.BOLD, 17));
+        gbc.gridx = 0;
+        gbc.gridy = 4;
+        gbc.gridwidth = 2;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
         continueGame.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent event) {
@@ -58,69 +90,54 @@ public class MainMenu extends JFrame{
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					new SudokuGUI(c.getBoardArray(), c.getDifficulty(),c.getEditableArray());
+					new SudokuGUI(c.getBoardArray(), c.getDifficulty(), c.getEditableArray(), main);
 					dispose();
 				} else {
 					//Do nothing
 				}
 		    }
 		});
-        button.add(continueGame,gbc);
+        buttons.add(continueGame,gbc);
 
-        JButton newGame = new JButton("New Game");
+        JButton setting = new JButton("Settings");
+        setting.setFont(new Font("Arial", Font.BOLD, 17));
+        gbc.weightx = 0.5;
         gbc.gridx = 0;
-        gbc.gridy = 1;
-        gbc.gridwidth = 4;
-        gbc.fill = GridBagConstraints.BOTH;
-        newGame.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent event) {
-				if(settings == null) {
-					new SudokuGUI(1);
-				} else {
-					new SudokuGUI(settings.getDifficulty());
-					settings.dispose();
-					if(highscores != null) {
-						highscores.dispose();
-					}
-				}
-				dispose();
-		    }
-		});
-        button.add(newGame,gbc);
-
-        JButton setting = new JButton("Setting");
-        gbc.gridx = 0;
-        gbc.gridy = 5;
-        gbc.gridwidth = 1;      
+        gbc.gridy = 8;
+        gbc.gridwidth = 1;  
+        gbc.fill = GridBagConstraints.HORIZONTAL;
         setting.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent event) {
 				if (settings!=null) {
-					settings.dispose();
+					settings.setVisible(true);
+				} else { 
+					settings = new SettingGUI();
 				}
-				settings = new SettingGUI();
 
 		    }
 		});
-        button.add(setting,gbc);
+        buttons.add(setting,gbc);
 
         JButton hiscore = new JButton("High Score");
+        hiscore.setFont(new Font("Arial", Font.BOLD, 17));
+        gbc.weightx = 0.5;
         gbc.gridx = 1;
-        gbc.gridy = 5;
+        gbc.gridy = 8;
         gbc.gridwidth = 1;
         hiscore.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent event) {
 				if (highscores!=null) {
-					highscores.dispose();
+					highscores.setVisible(true);
+				} else {
+					highscores = new HighGUI();
 				}
-				highscores = new HighGUI();
 
 		    }
 		});
-        button.add(hiscore,gbc);
+        buttons.add(hiscore,gbc);
         
-    	return button;
+    	return buttons;
     }
 }  
