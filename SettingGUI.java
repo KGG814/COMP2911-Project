@@ -6,87 +6,136 @@ import javax.swing.*;
 public class SettingGUI extends JFrame {
 
     private static final long serialVersionUID = 1L;
-    private int difficulty;
+    protected int difficulty;
+    private JRadioButton selected;
     
     public SettingGUI() {
 
-    	JPanel butt = buttons();
-    	add(butt);
     	this.difficulty = 1;
     	
+    	JPanel menu = createSettings();
+    	menu.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY));
+    	setLayout(new BorderLayout());
+		setContentPane(new JLabel(new ImageIcon("ui/b2.jpg")));	
 		setLayout(new FlowLayout(FlowLayout.CENTER));
+    	add(menu, BorderLayout.CENTER);
+    	
 		addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent we) {
                 dispose();
             }
         });
+		
+		setTitle("Settings");
 		pack();
+		setSize(300, 150);
 		Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
-		setLocation((d.width / 2 - 275), (d.height / 2 - 275));
+		setLocation((d.width / 2 - 500), (d.height / 2 - 210));
 		setResizable(true);
 		setVisible(true);
     }
 
-    public JPanel buttons() {
-        JPanel button = new JPanel();
-        button.setLayout(new GridBagLayout());
-        GridBagConstraints gbc = new GridBagConstraints();
+    public JPanel createSettings() {
+    	JPanel settings = new JPanel();
+    	settings.setLayout(new GridBagLayout());
+    	settings.setBackground(new Color(255, 231, 186));
+    	GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5,5,5,5);
-        
-        JLabel diff = new JLabel("Difficulty");
+    	
+    	JLabel set = new JLabel("Settings");
+    	set.setFont(new Font("Arial", Font.BOLD, 25));
+    	gbc.gridx = 0;
+    	gbc.gridy = 0;
+    	gbc.gridwidth = 2;
+    	settings.add(set, gbc);
+    	
+    	JLabel diff = new JLabel("Difficulties");
+    	diff.setFont(new Font("Arial", Font.PLAIN, 15));
+    	gbc.weightx = 0.5;
         gbc.gridx = 0;
-        gbc.gridy = 0;
+        gbc.gridy = 2;
         gbc.gridwidth = 2;
-        button.add(diff, gbc);
-        
-        JButton one = new JButton("1");
-        gbc.gridx = 2;
-        gbc.gridy = 0;
-        gbc.gridwidth = 2;
-        button.add(one, gbc);
-        one.addActionListener(new ActionListener() {
+    	settings.add(diff, gbc);
+
+    	JRadioButton one = new JRadioButton("1");
+    	one.setMnemonic(KeyEvent.VK_C);
+    	one.setBackground(new Color(255, 231, 186));
+    	selected = one;
+    	selected.setSelected(true);
+    	one.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
                 difficulty = 1;
+                if(selected != null) {
+                	selected.setSelected(false);
+                }
+                selected = (JRadioButton) (event.getSource());
+                selected.setSelected(true);
             }
         });
-        
-        JButton two = new JButton("2");
-        gbc.gridx = 4;
-        gbc.gridy = 0;
-        gbc.gridwidth = 2;
-        two.addActionListener(new ActionListener() {
+    	gbc.weightx = 0.5;
+        gbc.gridx = 2;
+        gbc.gridy = 2;
+        gbc.gridwidth = 1;
+    	settings.add(one, gbc);
+
+    	JRadioButton two = new JRadioButton("2");
+    	two.setMnemonic(KeyEvent.VK_C);
+    	two.setBackground(new Color(255, 231, 186));
+    	two.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
                 difficulty = 2;
+                if(selected != null) {
+                	selected.setSelected(false);
+                }
+                selected = (JRadioButton) (event.getSource());
+                selected.setSelected(true);
             }
         });
-        button.add(two, gbc);
-        
-        JButton three = new JButton("3");
-        gbc.gridx = 6;
-        gbc.gridy = 0;
-        gbc.gridwidth = 2;
-        three.addActionListener(new ActionListener() {
+    	gbc.weightx = 0.5;
+        gbc.gridx = 4;
+        gbc.gridy = 2;
+        gbc.gridwidth = 1;
+    	settings.add(two, gbc);
+
+    	JRadioButton three = new JRadioButton("3");
+    	three.setMnemonic(KeyEvent.VK_C);
+    	three.setBackground(new Color(255, 231, 186));
+    	three.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
                 difficulty = 3;
+                if(selected != null) {
+                	selected.setSelected(false);
+                }
+                selected = (JRadioButton) (event.getSource());
+                selected.setSelected(true);
             }
         });
-        button.add(three, gbc);
-        
-        JButton four = new JButton("4");
-        gbc.gridx = 8;
-        gbc.gridy = 0;
-        gbc.gridwidth = 2;
-        four.addActionListener(new ActionListener() {
+    	gbc.weightx = 0.5;
+        gbc.gridx = 6;
+        gbc.gridy = 2;
+        gbc.gridwidth = 1;
+    	settings.add(three, gbc);
+
+    	JRadioButton four = new JRadioButton("4");
+    	four.setMnemonic(KeyEvent.VK_C);
+    	four.setBackground(new Color(255, 231, 186));
+    	four.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
                 difficulty = 4;
+                if(selected != null) {
+                	selected.setSelected(false);
+                }
+                selected = (JRadioButton) (event.getSource());
+                selected.setSelected(true);
             }
         });
-        button.add(four, gbc);
-
-        return button;
-    }
-    
-    public int getDifficulty() {
-    	return difficulty;
+    	gbc.weightx = 0.5;
+        gbc.gridx = 8;
+        gbc.gridy = 2;
+        gbc.gridwidth = 1;
+    	settings.add(four, gbc);
+    	
+    	return settings;
+    	
     }
 }
