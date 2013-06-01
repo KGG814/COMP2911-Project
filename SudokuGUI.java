@@ -1,12 +1,16 @@
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.IOException;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 
 
@@ -23,121 +27,263 @@ public class SudokuGUI extends JFrame {
 	 * For some reason I have to put an ID
 	 */
 	private static final long serialVersionUID = 1L;
+	
+	private MainMenu menu;
 	private BoardGUI sudokuBoard;
 	private SolutionGUI currentSolution;
 	private int difficulty;
 	private int hints;
+	private JLabel diffLabel;
+	private JLabel hintLabel;
 	/**
 	 * Puts everything on the JFrame
 	 */
-	public SudokuGUI(int difficulty) {
+	public SudokuGUI(int difficulty, MainMenu menu) {
 
-		JPanel panel = new JPanel();
-		//panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
 		this.difficulty = difficulty;
-		hints = 2*difficulty;
-		sudokuBoard = new BoardGUI(difficulty);
+		this.hints = 2 * difficulty;
+		this.menu = menu;
+		this.sudokuBoard = new BoardGUI(difficulty);
+		
+    	setLayout(new BorderLayout());
+		setContentPane(new JLabel(new ImageIcon("ui/b2.jpg")));	
+		setLayout(new FlowLayout(FlowLayout.CENTER));
+		
+		JPanel panel = new JPanel();
+    	panel.setBackground(new Color(255, 231, 186));
 		JPanel buttons = setButtons();
-
 		panel.add(sudokuBoard);
 		panel.add(buttons);
-		add(panel);
+		add(panel, BorderLayout.CENTER);
 
 		//Set JFrame Properties
-		setLayout(new FlowLayout(FlowLayout.CENTER));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		pack();
+		setSize(700, 480);
 		Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
-		setLocation((d.width / 2 - 275), (d.height / 2 - 275));
+		setLocation((d.width / 2 - 360), (d.height / 2 - 260));
 		setResizable(true);
 		setVisible(true);
+		
 	}
 
-	public SudokuGUI(int[][] boardArray, int difficulty, int[][] editableArray) {
-
-		JPanel panel = new JPanel();
-		//panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
+	public SudokuGUI(int[][] boardArray, int difficulty, int[][] editableArray, MainMenu menu) {
+		
 		this.difficulty = difficulty;
-		hints = 2*difficulty;
+		this.hints = 2 * difficulty;
+		this.menu = menu;
 		sudokuBoard = new BoardGUI(boardArray, difficulty, editableArray);
+		
+    	setLayout(new BorderLayout());
+		setContentPane(new JLabel(new ImageIcon("ui/b2.jpg")));	
+		setLayout(new FlowLayout(FlowLayout.CENTER));
+		
+		JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+    	panel.setBackground(new Color(255, 231, 186));
 		JPanel buttons = setButtons();
-
 		panel.add(sudokuBoard);
 		panel.add(buttons);
-		add(panel);
+		add(panel, BorderLayout.CENTER);
 		
 		//Set JFrame Properties
-		setLayout(new FlowLayout(FlowLayout.CENTER));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		pack();
+		setSize(800, 480);
 		Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
-		setLocation((d.width / 2 - 275), (d.height / 2 - 275));
+		setLocation((d.width / 2 - 360), (d.height / 2 - 260));
 		setResizable(true);
 		setVisible(true);
+		
 	}
+	
 	/**
 	 * 
 	 * @return A JPanel that creates all the buttons
 	 */
 	public JPanel setButtons() {
 		JPanel buttons = new JPanel();
-		buttons.setLayout(new GridLayout(4, 2, 10, 10));
-		Dimension size = new Dimension(120, 40);
-
+    	buttons.setLayout(new GridBagLayout());
+    	buttons.setBackground(new Color(255, 231, 186));
+    	GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(5,5,5,5);
+        
+        diffLabel = new JLabel("Difficulty: " + Integer.toString(difficulty));
+        diffLabel.setFont(new Font("Arial", Font.BOLD, 17));
+        gbc.weightx = 0.5;
+		gbc.gridx = 0;
+        gbc.gridy = 2;
+        gbc.gridwidth = 2;
+        gbc.ipady = 15;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        buttons.add(diffLabel, gbc);
+        
+        hintLabel = new JLabel("Hints: " + Integer.toString(hints));
+        hintLabel.setFont(new Font("Arial", Font.BOLD, 17));
+        gbc.weightx = 0.5;
+		gbc.gridx = 2;
+        gbc.gridy = 2;
+        gbc.gridwidth = 2;
+        gbc.ipady = 15;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        buttons.add(hintLabel, gbc);
+        
 		JButton New = new JButton("New");
-		New.setPreferredSize(size);
+		New.setFont(new Font("Arial", Font.BOLD, 15));
+		gbc.weightx = 0.5;
+		gbc.gridx = 0;
+        gbc.gridy = 4;
+        gbc.gridwidth = 2;
+        gbc.ipady = 15;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
 		New.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent event) {
 				//add something
-				new SudokuGUI(difficulty);
+				new SudokuGUI(difficulty, menu);
 				dispose();
 		    }
 		});
-		
-		//JLabel numHints = new JLabel("Hints:");
+		buttons.add(New, gbc);
 
 		//put display for number of hints left
 		JButton GetHint = new JButton("Get Hint");
-		GetHint.setPreferredSize(size);
-		GetHint.addActionListener(new ActionListener()
+		GetHint.setFont(new Font("Arial", Font.BOLD, 15));
+		gbc.weightx = 0.5;
+		gbc.gridx = 2;
+        gbc.gridy = 4;
+        gbc.gridwidth = 2;
+        gbc.ipady = 15;
+        gbc.fill = GridBagConstraints.HORIZONTAL;		
+        GetHint.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent event) {
 				if(hints != 0) {
 					sudokuBoard.displayHint();
 					hints--;
+					hintLabel.setText("Hints: " + Integer.toString(hints));
 				}
 		    }
 		});
+        buttons.add(GetHint, gbc);
 
 		JButton Delete = new JButton("Delete");
-		Delete.setPreferredSize(size);
-		Delete.addActionListener(new ActionListener()
+		Delete.setFont(new Font("Arial", Font.BOLD, 15));
+		gbc.weightx = 0.5;
+		gbc.gridx = 0;
+        gbc.gridy = 6;
+        gbc.gridwidth = 2;
+        gbc.ipady = 15;
+        gbc.fill = GridBagConstraints.HORIZONTAL;		
+        Delete.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent event) {
 				//add something
 				sudokuBoard.deleteCell();
 		    }
 		});	
+        buttons.add(Delete, gbc);
 
 		JButton Solve = new JButton("Check");
-		Solve.setPreferredSize(size);
-		Solve.addActionListener(new ActionListener()
+		Solve.setFont(new Font("Arial", Font.BOLD, 15));
+		gbc.weightx = 0.5;
+		gbc.gridx = 2;
+        gbc.gridy = 6;
+        gbc.gridwidth = 2;
+        gbc.ipady = 15;
+        gbc.fill = GridBagConstraints.HORIZONTAL;		
+        Solve.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent event) {
 				//add something
-				if (sudokuBoard.checkSolution()) {
+				final JFrame answer = new JFrame();
+				answer.setLayout(new FlowLayout(FlowLayout.CENTER));
+				answer.pack();
+
+				Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
+				answer.setLocation((d.width - 800), (d.height / 2 - 100));
+				answer.setResizable(true);
+				answer.setVisible(true);
+				JPanel panel = new JPanel();
+				if (!sudokuBoard.checkSolution()) {
 					//instead of dispose call the saveRecord if it is correct
 					//open new window and have textfield to save name.
-					JFrame success = new JFrame();
-					success.setVisible(true);
+					answer.setTitle("SUCCESS :)");
+
+					panel.setLayout(new GridBagLayout());
+			    	GridBagConstraints gbc = new GridBagConstraints();
+			        gbc.insets = new Insets(5,5,5,5);
+			        
+					JLabel success = new JLabel("Board is Solved. Congratulations!!");
+					success.setFont(new Font("Arial", Font.BOLD, 17));
+					gbc.gridx = 0;
+			    	gbc.gridy = 0;
+			    	gbc.gridwidth = 2;
+			    	panel.add(success, gbc);
+			    	
+			    	JLabel enter = new JLabel("Enter Name:");
+			    	gbc.gridx = 0;
+			    	gbc.gridy = 2;
+			    	gbc.gridwidth = 2;
+			    	panel.add(enter, gbc);
+			    	
+					JTextField name = new JTextField();
+					name.addKeyListener(new KeyListener() 
+					{
+
+						@Override
+						public void keyPressed(KeyEvent arg0) {
+							// TODO Auto-generated method stub
+							if(arg0.getKeyCode() == KeyEvent.VK_ENTER) { 
+					            String name  = (String) ((JTextField) arg0.getSource()).getText();
+					            HighList hiscores = new HighList();
+					            hiscores.addToList(name, 10, difficulty);
+					            hiscores.saveRecord();
+					            answer.dispose();
+					        }
+						}
+
+						@Override
+						public void keyReleased(KeyEvent arg0) {
+							// TODO Auto-generated method stub
+							
+						}
+
+						@Override
+						public void keyTyped(KeyEvent arg0) {
+							// TODO Auto-generated method stub
+							
+						}
+						
+					});
+					gbc.gridx = 0;
+					gbc.gridy = 4;
+					gbc.gridwidth = 2;
+					gbc.ipady = 10;
+					gbc.fill = GridBagConstraints.HORIZONTAL;
+					panel.add(name, gbc);
+					
+					answer.setSize(350, 150);
+				} else {
+					answer.setTitle("Fail :(");
+					JLabel fail = new JLabel("Board is not solved. Try again!");
+					fail.setFont(new Font("Arial", Font.BOLD, 17));
+					answer.setSize(300, 80);
+					panel.add(fail);
 				}
+				answer.add(panel);
 		    }
 		});
+        buttons.add(Solve, gbc);
 
 		JButton Solution = new JButton("Solution");
-		Solution.setPreferredSize(size);
-		Solution.addActionListener(new ActionListener()
+		Solution.setFont(new Font("Arial", Font.BOLD, 15));
+		gbc.weightx = 0.5;
+		gbc.gridx = 0;
+        gbc.gridy = 8;
+        gbc.gridwidth = 2;
+        gbc.ipady = 15;
+        gbc.fill = GridBagConstraints.HORIZONTAL;		
+        Solution.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent event) {
 				if (currentSolution!=null) {
@@ -147,20 +293,17 @@ public class SudokuGUI extends JFrame {
 
 		    }
 		});
-		
-		JButton Back = new JButton("Back");
-		Back.setPreferredSize(size);
-		Back.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent event) {
-				dispose();
-				new MainMenu();
-		    }
-		});
-		
+        buttons.add(Solution, gbc);
+
 		JButton Save = new JButton("Save");
-		Save.setPreferredSize(size);
-		Save.addActionListener(new ActionListener()
+		Save.setFont(new Font("Arial", Font.BOLD, 15));
+		gbc.weightx = 0.5;
+		gbc.gridx = 2;
+        gbc.gridy = 8;
+        gbc.gridwidth = 2;
+        gbc.ipady = 15;
+        gbc.fill = GridBagConstraints.HORIZONTAL;		
+        Save.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent event) {
 				try {
@@ -171,15 +314,31 @@ public class SudokuGUI extends JFrame {
 				}
 		    }
 		});
-		
-		//buttons.add(numHints);
-		buttons.add(New);
-		buttons.add(GetHint);
-		buttons.add(Delete);
-		buttons.add(Solve);
-		buttons.add(Solution);
-		buttons.add(Back);
-		buttons.add(Save);
+		buttons.add(Save, gbc);
+
+		JButton Back = new JButton("Back");
+		Back.setFont(new Font("Arial", Font.BOLD, 15));
+		gbc.weightx = 0.5;
+		gbc.gridx = 0;
+        gbc.gridy = 10;
+        gbc.gridwidth = 4;
+        gbc.ipady = 15;
+        gbc.fill = GridBagConstraints.HORIZONTAL;		
+        Back.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent event) {
+				try {
+					sudokuBoard.save();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				dispose();
+				menu.setVisible(true);
+		    }
+		});
+        buttons.add(Back, gbc);
 
 		return buttons;
 	}
