@@ -13,9 +13,11 @@ public class SolutionGUI extends JFrame {
 	public SolutionGUI(SudokuBoard solution) {
 		JPanel panel = new JPanel();
 		//panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
+		this.solution = solution;
 		solutionBoard = new BoardGUI(solution);
 		panel.add(solutionBoard);
 		add(panel);	
+		
 		//Set JFrame Properties
 		setLayout(new FlowLayout(FlowLayout.CENTER));
 		addWindowListener(new WindowAdapter() {
@@ -23,9 +25,10 @@ public class SolutionGUI extends JFrame {
                 dispose();
             }
         });
-		this.solution = solution;
+		setTitle("Solution");
 		pack();
-		setResizable(false);
+		setSize(400, 425);
+		setResizable(true);
 		setVisible(true);
 	}
 
