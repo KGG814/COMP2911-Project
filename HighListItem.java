@@ -10,6 +10,9 @@ public class HighListItem implements Cloneable {
         this.difficulty = aDifficulty;
     }
 
+    /**
+     * @return record details in string.
+     */
     public String getRecord() {
         String result = name + " " + score + " " + difficulty + "\n";
         //result += name;

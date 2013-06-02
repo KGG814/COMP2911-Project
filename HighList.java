@@ -3,7 +3,6 @@ import java.io.*;
 
 public class HighList {
     private ArrayList<HighListItem> list;
-    int min;
 
     /**
      * Construct list of high scores via input file.
@@ -70,9 +69,6 @@ public class HighList {
         this.enList();
     }
 
-    public ArrayList<HighListItem> getList() { return list; } 
-    public int getMin() { return min; }
-
     /**
      * @return sorted list information.
      */
@@ -110,11 +106,5 @@ public class HighList {
             }
         }
     }
-
-    public boolean isWithinTop(int value){
-        return value >= this.min;
-    }
-
-    public void destroy() { list.clear(); }
 
 }

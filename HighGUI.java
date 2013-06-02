@@ -3,6 +3,9 @@ import java.awt.event.*;
 
 import javax.swing.*;
 
+/**
+ * GUI showing high scores.
+ */
 public class HighGUI extends JFrame {
 
     private static final long serialVersionUID = 1L;
