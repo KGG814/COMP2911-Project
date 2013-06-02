@@ -3,10 +3,18 @@ import java.awt.event.*;
 
 import javax.swing.*;
 
+/**
+ * A GUI class to display the settings of the game
+ * Displays the chosen difficulty of the sudoku
+ * Default difficulty is 1
+ *
+ */
 public class SettingGUI extends JFrame {
 
     private static final long serialVersionUID = 1L;
     protected int difficulty;
+    //Used to store the radiobutton selected to change
+    //the difficulty of the board
     private JRadioButton selected;
     
     public SettingGUI() {
@@ -35,6 +43,11 @@ public class SettingGUI extends JFrame {
 		setVisible(true);
     }
 
+    /**
+     * 
+     * @return a panel that holds all the settings
+     * Can alter the difficulty of the board, from 1-4
+     */
     public JPanel createSettings() {
     	JPanel settings = new JPanel();
     	settings.setLayout(new GridBagLayout());
