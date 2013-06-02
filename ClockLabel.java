@@ -1,4 +1,5 @@
 import java.awt.EventQueue;
+import java.awt.Font;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -10,13 +11,13 @@ public class ClockLabel extends JLabel {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	int time;
+	protected int time;
 	private Timer timer  = new Timer();
 	ClockLabel (int time) {
 		this.time = time;
 		timer.schedule(new ClockTask(this), 0, 1000);
 	}
-	
+
 	private class ClockTask extends TimerTask {
 
 		JLabel timerLabel;
@@ -28,11 +29,12 @@ public class ClockLabel extends JLabel {
 
                 @Override
                 public void run() {
-                    timerLabel.setText(String.valueOf(time++));
+                	timerLabel.setFont(new Font("Arial", Font.BOLD, 17));
+                    timerLabel.setText("Time: " + String.valueOf(time++));
                 }
             });
 		}
-		
+
 	}
-	
+
 }
