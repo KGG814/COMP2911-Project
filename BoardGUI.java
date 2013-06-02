@@ -1,387 +1,275 @@
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.IOException;
+import java.util.Random;
 
-import javax.swing.ImageIcon;
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 
 
+public class BoardGUI extends JPanel {
 
-/**
- * The GUI Class to hold everything for the sudoku puzzle
- * which includes the sudoku board, buttons and images if
- * we want
- *
- */
-public class SudokuGUI extends JFrame {
-
-
-	/**
-	 * For some reason I have to put an ID
-	 */
 	private static final long serialVersionUID = 1L;
-	
-	private MainMenu menu;
-	private BoardGUI sudokuBoard;
-	private SolutionGUI currentSolution;
+	Cell[][] board;
+	private Cell nothingCell;
+	private Cell chosenCell;
+	private SudokuGenerator generator;
+	private SudokuBoard sudokuBoard;
+	private SudokuBoard solution;
 	private int difficulty;
-	private int hints;
-	private JLabel diffLabel;
-	private JLabel hintLabel;
-	private ClockLabel clock;
-	
-	/**
-	 * Puts everything on the JFrame
-	 */
-	public SudokuGUI(int difficulty, MainMenu menu) {
 
+	public BoardGUI(int difficulty) {
+		board = new Cell[9][9];
+		nothingCell = new Cell(-1, -1);
+		chosenCell = nothingCell;
 		this.difficulty = difficulty;
-		this.hints = 2 * difficulty;
-		this.menu = menu;
-		this.sudokuBoard = new BoardGUI(difficulty);
-		
-    	setLayout(new BorderLayout());
-		setContentPane(new JLabel(new ImageIcon("ui/b2.jpg")));	
-		setLayout(new FlowLayout(FlowLayout.CENTER));
-		
-		JPanel panel = new JPanel();
-    	panel.setBackground(new Color(255, 231, 186));
-		JPanel buttons = setButtons(0);
-		panel.add(sudokuBoard);
-		panel.add(buttons);
-		add(panel, BorderLayout.CENTER);
+		generator = new SudokuGenerator(difficulty);
+		generator.GenerateSolvableSudoku();
+		sudokuBoard = generator.getBoard();
+		solution = generator.solution;
+		sudokuBoard.printBoard();
+		System.out.print("\n");
 
-		//Set JFrame Properties
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		pack();
-		setSize(700, 480);
+		JPanel squares = createSquares();	
+		add(squares);
+		JPanel buttons = createNumButtons();
+		add(buttons);	
+
+		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
-		setLocation((d.width / 2 - 360), (d.height / 2 - 260));
-		setResizable(true);
+		setLocation((d.width / 2 - 175), (d.height / 2 - 275));
+		populateBoard(sudokuBoard);
 		setVisible(true);
-		
 	}
-	
-	/**
-	 * Constructor used when loading a saved sudoku board
-	 * @param boardArray
-	 * @param difficulty
-	 * @param editableArray
-	 * @param menu
-	 */
-	public SudokuGUI(int[][] boardArray, int difficulty, int[][] editableArray, MainMenu menu, int time) {
-		
+
+	public BoardGUI(int[][] boardArray, int difficulty, int[][] editableArray) {
+		board = new Cell[9][9];
+		nothingCell = new Cell(-1, -1);
+		chosenCell = nothingCell;
 		this.difficulty = difficulty;
-		this.hints = 2 * difficulty;
-		this.menu = menu;
-		sudokuBoard = new BoardGUI(boardArray, difficulty, editableArray);
-		
-    	setLayout(new BorderLayout());
-		setContentPane(new JLabel(new ImageIcon("ui/b2.jpg")));	
-		setLayout(new FlowLayout(FlowLayout.CENTER));
-		
-		JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-    	panel.setBackground(new Color(255, 231, 186));
-		JPanel buttons = setButtons(time);
-		panel.add(sudokuBoard);
-		panel.add(buttons);
-		add(panel, BorderLayout.CENTER);
-		
-		//Set JFrame Properties
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		pack();
-		setSize(800, 480);
+		generator = null;
+		sudokuBoard = new SudokuBoard(boardArray);
+		sudokuBoard.printBoard();
+		SudokuSolver solver = new SudokuSolver(sudokuBoard);
+		solver.runSolve();
+		solution = solver.getSolution();
+		System.out.print("\n");
+
+		JPanel squares = createSquares();	
+		add(squares);
+		JPanel buttons = createNumButtons();
+		add(buttons);	
+
+		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
-		setLocation((d.width / 2 - 360), (d.height / 2 - 260));
-		setResizable(true);
-		setVisible(true);
-		
-	}
-	
-	/**
-	 * 
-	 * @return A JPanel the side panel used to store all the options available
-	 * during the game
-	 * Includes: 
-	 */
-	public JPanel setButtons(int time) {
-		JPanel buttons = new JPanel();
-    	buttons.setLayout(new GridBagLayout());
-    	buttons.setBackground(new Color(255, 231, 186));
-    	GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(5,5,5,5);
-        
-        clock = new ClockLabel(time);
-        gbc.weightx = 0.5;
-		gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.gridwidth = 2;
-        gbc.ipady = 15;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        buttons.add(clock, gbc);
-        
-        diffLabel = new JLabel("Difficulty: " + Integer.toString(difficulty));
-        diffLabel.setFont(new Font("Arial", Font.BOLD, 17));
-        gbc.weightx = 0.5;
-		gbc.gridx = 0;
-        gbc.gridy = 2;
-        gbc.gridwidth = 2;
-        gbc.ipady = 15;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        buttons.add(diffLabel, gbc);
-        
-        hintLabel = new JLabel("Hints: " + Integer.toString(hints));
-        hintLabel.setFont(new Font("Arial", Font.BOLD, 17));
-        gbc.weightx = 0.5;
-		gbc.gridx = 2;
-        gbc.gridy = 2;
-        gbc.gridwidth = 2;
-        gbc.ipady = 15;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        buttons.add(hintLabel, gbc);
-        
-		JButton New = new JButton("New");
-		New.setFont(new Font("Arial", Font.BOLD, 15));
-		gbc.weightx = 0.5;
-		gbc.gridx = 0;
-        gbc.gridy = 4;
-        gbc.gridwidth = 2;
-        gbc.ipady = 15;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-		New.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent event) {
-				//add something
-				new SudokuGUI(difficulty, menu);
-				dispose();
-		    }
-		});
-		buttons.add(New, gbc);
-		
-		JButton Reset = new JButton("Reset");
-		Reset.setFont(new Font("Arial", Font.BOLD, 15));
-		gbc.weightx = 0.5;
-		gbc.gridx = 2;
-        gbc.gridy = 4;
-        gbc.gridwidth = 2;
-        gbc.ipady = 15;
-        gbc.fill = GridBagConstraints.HORIZONTAL;		
-        Reset.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent event) {
-				sudokuBoard.reset();
-		    }
-		});
-        buttons.add(Reset, gbc);
-
-		//put display for number of hints left
-		JButton GetHint = new JButton("Get Hint");
-		GetHint.setFont(new Font("Arial", Font.BOLD, 15));
-		gbc.weightx = 0.5;
-		gbc.gridx = 0;
-        gbc.gridy = 6;
-        gbc.gridwidth = 2;
-        gbc.ipady = 15;
-        gbc.fill = GridBagConstraints.HORIZONTAL;		
-        GetHint.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent event) {
-				if(hints != 0) {
-					sudokuBoard.displayHint();
-					hints--;
-					hintLabel.setText("Hints: " + Integer.toString(hints));
-				}
-		    }
-		});
-        buttons.add(GetHint, gbc);
-
-		JButton Delete = new JButton("Delete");
-		Delete.setFont(new Font("Arial", Font.BOLD, 15));
-		gbc.weightx = 0.5;
-		gbc.gridx = 2;
-        gbc.gridy = 6;
-        gbc.gridwidth = 2;
-        gbc.ipady = 15;
-        gbc.fill = GridBagConstraints.HORIZONTAL;		
-        Delete.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent event) {
-				//add something
-				sudokuBoard.deleteCell();
-		    }
-		});	
-        buttons.add(Delete, gbc);
-
-		JButton Solve = new JButton("Check");
-		Solve.setFont(new Font("Arial", Font.BOLD, 15));
-		gbc.weightx = 0.5;
-		gbc.gridx = 0;
-        gbc.gridy = 8;
-        gbc.gridwidth = 2;
-        gbc.ipady = 15;
-        gbc.fill = GridBagConstraints.HORIZONTAL;		
-        Solve.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent event) {
-				//add something
-				final JFrame answer = new JFrame();
-				answer.setLayout(new FlowLayout(FlowLayout.CENTER));
-				answer.pack();
-
-				Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
-				answer.setLocation((d.width - 800), (d.height / 2 - 100));
-				answer.setResizable(true);
-				answer.setVisible(true);
-				JPanel panel = new JPanel();
-				if (!sudokuBoard.checkSolution()) {
-					//instead of dispose call the saveRecord if it is correct
-					//open new window and have textfield to save name.
-					answer.setTitle("SUCCESS :)");
-
-					panel.setLayout(new GridBagLayout());
-			    	GridBagConstraints gbc = new GridBagConstraints();
-			        gbc.insets = new Insets(5,5,5,5);
-			        
-					JLabel success = new JLabel("Board is Solved. Congratulations!!");
-					success.setFont(new Font("Arial", Font.BOLD, 17));
-					gbc.gridx = 0;
-			    	gbc.gridy = 0;
-			    	gbc.gridwidth = 2;
-			    	panel.add(success, gbc);
-			    	
-			    	JLabel enter = new JLabel("Enter Name:");
-			    	gbc.gridx = 0;
-			    	gbc.gridy = 2;
-			    	gbc.gridwidth = 2;
-			    	panel.add(enter, gbc);
-			    	
-					JTextField name = new JTextField();
-					name.addKeyListener(new KeyListener() 
-					{
-
-						@Override
-						public void keyPressed(KeyEvent arg0) {
-							// TODO Auto-generated method stub
-							//Prevents from entering a name that is just spaces of empty
-							if(!((JTextField) arg0.getSource()).getText().isEmpty() && !((JTextField) arg0.getSource()).getText().trim().isEmpty()) {
-								if(arg0.getKeyCode() == KeyEvent.VK_ENTER) { 
-						            String name  = (String) ((JTextField) arg0.getSource()).getText();
-						            String[] combine = name.split(" ");
-						            name = combine[0] + combine[1];
-						            HighList hiscores = new HighList();
-						            hiscores.addToList(name, clock.getTime(), difficulty);
-						            hiscores.saveRecord();
-						            answer.dispose();
-						        }
-							}
-						}
-
-						@Override
-						public void keyReleased(KeyEvent arg0) {
-							// TODO Auto-generated method stub
-							
-						}
-
-						@Override
-						public void keyTyped(KeyEvent arg0) {
-							// TODO Auto-generated method stub
-							
-						}
-						
-					});
-					gbc.gridx = 0;
-					gbc.gridy = 4;
-					gbc.gridwidth = 2;
-					gbc.ipady = 10;
-					gbc.fill = GridBagConstraints.HORIZONTAL;
-					panel.add(name, gbc);
-					
-					answer.setSize(350, 150);
+		setLocation((d.width / 2 - 175), (d.height / 2 - 275));
+		populateBoard(sudokuBoard);
+		for (int row = 8 ; row >= 0; row--) {
+			for (int col = 0; col < 9; col++) {
+				boolean status;
+				if (editableArray[col][row]==1) {
+					status = true;
+					if (!sudokuBoard.numberIsLegal(row, col, 
+							  boardArray[col][row])) {
+						board[col][row].setForeground(Color.RED);
+						board[col][row].setBackground(Color.WHITE);
+					}
 				} else {
-					answer.setTitle("Fail :(");
-					JLabel fail = new JLabel("Board is not solved. Try again!");
-					fail.setFont(new Font("Arial", Font.BOLD, 17));
-					answer.setSize(300, 80);
-					panel.add(fail);
+					status = false ;
 				}
-				answer.add(panel);
-		    }
-		});
-        buttons.add(Solve, gbc);
-
-		JButton Solution = new JButton("Solution");
-		Solution.setFont(new Font("Arial", Font.BOLD, 15));
-		gbc.weightx = 0.5;
-		gbc.gridx = 2;
-        gbc.gridy = 8;
-        gbc.gridwidth = 2;
-        gbc.ipady = 15;
-        gbc.fill = GridBagConstraints.HORIZONTAL;		
-        Solution.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent event) {
-				if (currentSolution!=null) {
-					currentSolution.dispose();
-				}
-				currentSolution = new SolutionGUI(sudokuBoard.getSolution());
-
-		    }
-		});
-        buttons.add(Solution, gbc);
-
-		JButton Save = new JButton("Save");
-		Save.setFont(new Font("Arial", Font.BOLD, 15));
-		gbc.weightx = 0.5;
-		gbc.gridx = 0;
-        gbc.gridy = 10;
-        gbc.gridwidth = 2;
-        gbc.ipady = 15;
-        gbc.fill = GridBagConstraints.HORIZONTAL;		
-        Save.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent event) {
-				try {
-					sudokuBoard.save(clock.getTime());
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-		    }
-		});
-		buttons.add(Save, gbc);
-
-		JButton Back = new JButton("Back");
-		Back.setFont(new Font("Arial", Font.BOLD, 15));
-		gbc.weightx = 0.5;
-		gbc.gridx = 2;
-        gbc.gridy = 10;
-        gbc.gridwidth = 2;
-        gbc.ipady = 15;
-        gbc.fill = GridBagConstraints.HORIZONTAL;		
-        Back.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent event) {
-				try {
-					sudokuBoard.save(clock.getTime());
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				
-				dispose();
-				menu.setVisible(true);
-		    }
-		});
-        buttons.add(Back, gbc);
-
-		return buttons;
+				board[col][row].setEditable(status);
+			}
+		}
+		setVisible(true);
 	}
 
+	public BoardGUI(SudokuBoard solution) {
+		board = new Cell[9][9];
+		nothingCell = new Cell(-1, -1);
+		chosenCell = nothingCell;
+		sudokuBoard = solution;
+		sudokuBoard.printBoard();
+		System.out.print("\n");
+		JPanel squares = createSquares();		
+		add(squares);	
+		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
+		setLocation((d.width / 2 - 175), (d.height / 2 - 275));
+		populateBoard(sudokuBoard);
+		setVisible(true);
+	}
+
+	public JPanel createSquares() {
+		JPanel squares = new JPanel();
+		squares.setLayout(new GridLayout(9, 9, 1, 1));
+    	squares.setBackground(new Color(255, 231, 186));
+
+		for(int row = 8 ; row >= 0; row--) {
+			for(int col = 0; col < 9; col++) {
+				board[col][row] = new Cell(col, row);
+				squares.add(board[col][row]);
+				board[col][row].addMouseListener(new MouseListener() {
+
+					@Override
+					public void mouseClicked(MouseEvent e) {
+					}
+
+					@Override
+					public void mouseEntered(MouseEvent e) {
+					}
+
+					@Override
+					public void mouseExited(MouseEvent e) {
+					}
+
+					@Override
+					public void mousePressed(MouseEvent e) {
+						chosenCell.setBackground(Color.WHITE);
+						chosenCell = (Cell) e.getSource();
+						chosenCell.setBackground(Color.CYAN);
+					}
+
+					@Override
+					public void mouseReleased(MouseEvent e) {
+					}
+
+				});
+			}
+		}
+
+		return squares;
+	}
+
+	public JPanel createSquaresSolution() {
+		JPanel squares = new JPanel();
+		squares.setLayout(new GridLayout(9, 9, 1, 1));
+		return squares;
+	}
+
+	public JPanel createNumButtons() {
+		JPanel numbers = new JPanel();
+		numbers.setLayout(new GridLayout(1, 1, 3, 1));
+		numbers.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
+    	numbers.setBackground(new Color(255, 231, 186));
+
+		String keyLabels = "123456789";
+	    for (int i = 0; i < keyLabels.length(); i++) {
+	    	final String label = keyLabels.substring(i, i + 1);
+	        final JButton keyButton = new JButton(label);
+	        keyButton.setFont(new Font("Arial", Font.BOLD, 15));
+	        numbers.add(keyButton);
+	        keyButton.addActionListener(new ActionListener()
+	        {
+	        	public void actionPerformed(ActionEvent event) {
+	        		if(chosenCell.getEditable()) {
+	        			chosenCell.setFont(new Font("Lucida Console", Font.BOLD, 18));
+	        			chosenCell.setText(keyButton.getText());
+	        			if(chosenCell != nothingCell) {
+	        				if(difficulty == 1) {
+	        					//check box, column and row
+	        					if (!sudokuBoard.numberIsLegal(chosenCell.getRow(), chosenCell.getCol(), 
+	        												  Integer.parseInt(keyButton.getText()))) {
+	        						chosenCell.setForeground(Color.RED);
+	        						chosenCell.setBackground(Color.WHITE);
+	        					} else {
+	        						chosenCell.setForeground(Color.BLACK);
+	        						chosenCell.setBackground(Color.WHITE);
+	        					}
+		        				sudokuBoard.setNumber(chosenCell.getCol(), chosenCell.getRow(), Integer.parseInt(keyButton.getText()));
+
+	        				}
+	        			}
+						chosenCell = nothingCell;
+	        		}
+	            }
+	        });
+	    }
+
+		return numbers;
+	}
+
+	public void deleteCell() {
+		if(chosenCell.getEditable()) {
+		   chosenCell.setBackground(Color.WHITE);
+		   chosenCell.setText("");
+		   chosenCell.setEditable(true);
+		   chosenCell = nothingCell;
+		}
+	}
+
+	public void populateBoard (SudokuBoard sudoku) {
+		for (int col = 0; col<9; col++) {
+			for (int row = 0; row<9; row++){
+				//want to out
+				String number = Integer.toString(sudoku.getNumber(col, row));
+				if(!number.equals("0")) {
+					board[col][row].setText(number);
+					board[col][row].setForeground(Color.GRAY);
+					board[col][row].setEditable(false);
+				}
+			}
+		}
+	}
+
+	public SudokuBoard getSolution () {
+		return solution;
+	}
+
+	public boolean checkSolution() {
+		SudokuBoard solutions = solution;
+
+		for(int i = 0; i < 9; i++) {
+			for(int j = 0; j < 9; j++) {
+				if(solutions.getNumber(i, j) != sudokuBoard.getNumber(i, j)) {
+					return false;
+				}
+			}
+		}
+
+		return true;
+	}
+	
+	public void reset() {
+		for(int row = 0; row < 9; row++) {
+			for(int col = 0; col < 9; col++) {
+				if(board[col][row].getEditable()) {
+					board[col][row].setText("");
+					sudokuBoard.setNumber(col, row, 0);
+				}
+			}
+		}
+	}
+
+	public void displayHint() {
+		Random numGenerator = new Random();
+		int col = numGenerator.nextInt(9);
+		int row = numGenerator.nextInt(9);
+		String number = Integer.toString(sudokuBoard.getNumber(col, row));
+
+		while(!number.equals("0")) {
+			col = numGenerator.nextInt(9);
+			row = numGenerator.nextInt(9);
+			number = Integer.toString(sudokuBoard.getNumber(col, row));
+		}
+
+		sudokuBoard.setNumber(col, row, solution.getNumber(col, row));
+		board[col][row].setText(Integer.toString(solution.getNumber(col, row)));
+		board[col][row].setForeground(Color.MAGENTA);
+		board[col][row].setEditable(false);
+	}
+
+	public void save (int time) throws IOException {
+		boolean[][] editableArray = new boolean[9][9];
+		for (int col = 0; col < 9; col++) {
+			for (int row = 0; row < 9; row++) {
+				editableArray[col][row] = board[col][row].getEditable();
+			}
+		}
+		sudokuBoard.saveState(difficulty, time, editableArray);
+	}
 }
