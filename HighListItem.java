@@ -1,4 +1,3 @@
-
 public class HighListItem implements Cloneable {
     private final String name;
     private final int score;
@@ -15,12 +14,6 @@ public class HighListItem implements Cloneable {
      */
     public String getRecord() {
         String result = name + " " + score + " " + difficulty + "\n";
-        //result += name;
-        //result += " ";
-        //result += score;
-        //result += " ";
-        //result += difficulty;
-        //result += "\n";
 
         return result;
     }
