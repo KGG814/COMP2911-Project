@@ -6,6 +6,10 @@ public class SudokuSolver {
 	int runCount;
 	Exception fail;
 	
+	/**
+	 * Constructor for a solver
+	 * @param board the board to solve
+	 */
 	SudokuSolver(SudokuBoard board) {
 		fail = new Exception("Solution not found");
 		runCount = 0;
@@ -17,6 +21,10 @@ public class SudokuSolver {
 	   }
 	}
 	
+	/**
+	 * getter for solution
+	 * @return solution in a new SudokuBoard
+	 */
 	public SudokuBoard getSolution () {
 		int[][] array = new int[9][9];
 		for (int i=0; i<9; i++) {
@@ -27,6 +35,10 @@ public class SudokuSolver {
 		return new SudokuBoard (array);
 	}
 	
+	/**
+	 * Solves the board
+	 * @return true if successful, false otherwise
+	 */
 	public boolean runSolve ()  {
 		if (!boardIsValid()) {
 			return false;
@@ -41,6 +53,12 @@ public class SudokuSolver {
 		return true;
 	}
 	
+	/**
+	 * Recursive method to solve board
+	 * @param col column of tile to solve
+	 * @param row row of tile to solve
+	 * @throws Exception
+	 */
 	private void solve (int col, int row) throws Exception {
 		runCount++;
 		if (runCount>40000) {
@@ -64,6 +82,12 @@ public class SudokuSolver {
 		}
 	}
  
+	/**
+	 * Determines next tile to call solve on
+	 * @param col column of tile
+	 * @param row row of tile
+	 * @throws Exception
+	 */
 	 public void next (int col, int row) throws Exception {
 		   if (col<8) {
 			   solve(col+1,row);
@@ -72,6 +96,10 @@ public class SudokuSolver {
 		   }
 	 }
 	
+	 /**
+	  * Checks if the board is valid
+	  * @return true if valid, false otherwise
+	  */
 	 private boolean boardIsValid () {
 		 LinkedList<Integer> numList = new LinkedList<Integer>();
 		 int num;
@@ -124,6 +152,12 @@ public class SudokuSolver {
 		 return true;
 	 }
 	 
+	 /**
+	  * Checks a row to see if a number can be placed
+	  * @param row row of tile
+	  * @param num number to test
+	  * @return true if valid placement, false otherwise
+	  */
 	private boolean checkRow( int row, int num ) {
 		for( int i = 0; i < 9; i++ ) {
 			if( solutionArray[i][row] == num ) {
@@ -133,6 +167,12 @@ public class SudokuSolver {
 		return true;
 	}
 	
+	/**
+	  * Checks a column to see if a number can be placed
+	  * @param col column of tile
+	  * @param num number to test
+	  * @return true if valid placement, false otherwise
+	  */
 	private boolean checkCol( int col, int num ) {
 		for( int i = 0; i < 9; i++ ) {
 			if( solutionArray[col][i] == num ) {
@@ -142,6 +182,13 @@ public class SudokuSolver {
 		return true;
 	}
 	
+	/**
+	 * Checks a box to see if a number can be placed
+	 * @param col column of tile
+	 * @param row row of tile
+	 * @param num number to test
+	 * @return true if valid placement, false otherwise
+	 */
 	private boolean checkBox( int col, int row, int num ) {
 		row = (row / 3) * 3 ;
 		col = (col / 3) * 3 ;
