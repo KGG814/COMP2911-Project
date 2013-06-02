@@ -7,11 +7,13 @@ public class SettingGUI extends JFrame {
 
     private static final long serialVersionUID = 1L;
     protected int difficulty;
+    protected Color chosenColour;
     private JRadioButton selected;
     
     public SettingGUI() {
 
     	this.difficulty = 1;
+    	chosenColour = new Color(255, 231, 186);
     	
     	JPanel menu = createSettings();
     	menu.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY));
@@ -28,7 +30,7 @@ public class SettingGUI extends JFrame {
 		
 		setTitle("Settings");
 		pack();
-		setSize(300, 150);
+		setSize(300, 125);
 		Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
 		setLocation((d.width / 2 - 500), (d.height / 2 - 210));
 		setResizable(true);
