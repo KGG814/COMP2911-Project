@@ -1,4 +1,3 @@
-import java.util.*;
 
 public class HighListItem implements Cloneable {
     private final String name;
@@ -12,14 +11,13 @@ public class HighListItem implements Cloneable {
     }
 
     public String getRecord() {
-        String result = "";
-        result += name;
-        result += " - ";
-        result += score;
-        result += "[Difficulty ";
-        result += difficulty;
-        result += "]";
-        result += "\n";
+        String result = name + " " + score + " " + difficulty + "\n";
+        //result += name;
+        //result += " ";
+        //result += score;
+        //result += " ";
+        //result += difficulty;
+        //result += "\n";
 
         return result;
     }
