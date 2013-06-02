@@ -36,6 +36,7 @@ public class SudokuGUI extends JFrame {
 	private JLabel diffLabel;
 	private JLabel hintLabel;
 	private ClockLabel clock;
+	
 	/**
 	 * Puts everything on the JFrame
 	 */
@@ -67,10 +68,16 @@ public class SudokuGUI extends JFrame {
 		setVisible(true);
 		
 	}
-
-	public SudokuGUI(int[][] boardArray, int difficulty, 
-			int[][] editableArray, MainMenu menu, int time) {
-		System.out.println(time);
+	
+	/**
+	 * Constructor used when loading a saved sudoku board
+	 * @param boardArray
+	 * @param difficulty
+	 * @param editableArray
+	 * @param menu
+	 */
+	public SudokuGUI(int[][] boardArray, int difficulty, int[][] editableArray, MainMenu menu, int time) {
+		
 		this.difficulty = difficulty;
 		this.hints = 2 * difficulty;
 		this.menu = menu;
@@ -100,7 +107,9 @@ public class SudokuGUI extends JFrame {
 	
 	/**
 	 * 
-	 * @return A JPanel that creates all the buttons
+	 * @return A JPanel the side panel used to store all the options available
+	 * during the game
+	 * Includes: 
 	 */
 	public JPanel setButtons(int time) {
 		JPanel buttons = new JPanel();
@@ -110,7 +119,6 @@ public class SudokuGUI extends JFrame {
         gbc.insets = new Insets(5,5,5,5);
         
         clock = new ClockLabel(time);
-       
         gbc.weightx = 0.5;
 		gbc.gridx = 0;
         gbc.gridy = 0;
@@ -261,13 +269,18 @@ public class SudokuGUI extends JFrame {
 						@Override
 						public void keyPressed(KeyEvent arg0) {
 							// TODO Auto-generated method stub
-							if(arg0.getKeyCode() == KeyEvent.VK_ENTER) { 
-					            String name  = (String) ((JTextField) arg0.getSource()).getText();
-					            HighList hiscores = new HighList();
-					            hiscores.addToList(name, clock.time, difficulty);
-					            hiscores.saveRecord();
-					            answer.dispose();
-					        }
+							//Prevents from entering a name that is just spaces of empty
+							if(!((JTextField) arg0.getSource()).getText().isEmpty() && !((JTextField) arg0.getSource()).getText().trim().isEmpty()) {
+								if(arg0.getKeyCode() == KeyEvent.VK_ENTER) { 
+						            String name  = (String) ((JTextField) arg0.getSource()).getText();
+						            String[] combine = name.split(" ");
+						            name = combine[0] + combine[1];
+						            HighList hiscores = new HighList();
+						            hiscores.addToList(name, clock.getTime(), difficulty);
+						            hiscores.saveRecord();
+						            answer.dispose();
+						        }
+							}
 						}
 
 						@Override
