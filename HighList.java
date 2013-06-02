@@ -3,6 +3,7 @@ import java.io.*;
 
 public class HighList {
     private ArrayList<HighListItem> list;
+    int min;
 
     /**
      * Construct list of high scores via input file.
