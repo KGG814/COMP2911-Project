@@ -35,6 +35,7 @@ public class SudokuGUI extends JFrame {
 	private int hints;
 	private JLabel diffLabel;
 	private JLabel hintLabel;
+	private ClockLabel clock;
 	/**
 	 * Puts everything on the JFrame
 	 */
@@ -107,6 +108,16 @@ public class SudokuGUI extends JFrame {
     	GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5,5,5,5);
         
+        clock = new ClockLabel(0);
+       
+        gbc.weightx = 0.5;
+		gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth = 2;
+        gbc.ipady = 15;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        buttons.add(clock, gbc);
+        
         diffLabel = new JLabel("Difficulty: " + Integer.toString(difficulty));
         diffLabel.setFont(new Font("Arial", Font.BOLD, 17));
         gbc.weightx = 0.5;
@@ -144,13 +155,29 @@ public class SudokuGUI extends JFrame {
 		    }
 		});
 		buttons.add(New, gbc);
+		
+		JButton Reset = new JButton("Reset");
+		Reset.setFont(new Font("Arial", Font.BOLD, 15));
+		gbc.weightx = 0.5;
+		gbc.gridx = 2;
+        gbc.gridy = 4;
+        gbc.gridwidth = 2;
+        gbc.ipady = 15;
+        gbc.fill = GridBagConstraints.HORIZONTAL;		
+        Reset.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent event) {
+				sudokuBoard.reset();
+		    }
+		});
+        buttons.add(Reset, gbc);
 
 		//put display for number of hints left
 		JButton GetHint = new JButton("Get Hint");
 		GetHint.setFont(new Font("Arial", Font.BOLD, 15));
 		gbc.weightx = 0.5;
-		gbc.gridx = 2;
-        gbc.gridy = 4;
+		gbc.gridx = 0;
+        gbc.gridy = 6;
         gbc.gridwidth = 2;
         gbc.ipady = 15;
         gbc.fill = GridBagConstraints.HORIZONTAL;		
@@ -169,7 +196,7 @@ public class SudokuGUI extends JFrame {
 		JButton Delete = new JButton("Delete");
 		Delete.setFont(new Font("Arial", Font.BOLD, 15));
 		gbc.weightx = 0.5;
-		gbc.gridx = 0;
+		gbc.gridx = 2;
         gbc.gridy = 6;
         gbc.gridwidth = 2;
         gbc.ipady = 15;
@@ -186,8 +213,8 @@ public class SudokuGUI extends JFrame {
 		JButton Solve = new JButton("Check");
 		Solve.setFont(new Font("Arial", Font.BOLD, 15));
 		gbc.weightx = 0.5;
-		gbc.gridx = 2;
-        gbc.gridy = 6;
+		gbc.gridx = 0;
+        gbc.gridy = 8;
         gbc.gridwidth = 2;
         gbc.ipady = 15;
         gbc.fill = GridBagConstraints.HORIZONTAL;		
@@ -236,7 +263,7 @@ public class SudokuGUI extends JFrame {
 							if(arg0.getKeyCode() == KeyEvent.VK_ENTER) { 
 					            String name  = (String) ((JTextField) arg0.getSource()).getText();
 					            HighList hiscores = new HighList();
-					            hiscores.addToList(name, 10, difficulty);
+					            hiscores.addToList(name, clock.time, difficulty);
 					            hiscores.saveRecord();
 					            answer.dispose();
 					        }
@@ -278,7 +305,7 @@ public class SudokuGUI extends JFrame {
 		JButton Solution = new JButton("Solution");
 		Solution.setFont(new Font("Arial", Font.BOLD, 15));
 		gbc.weightx = 0.5;
-		gbc.gridx = 0;
+		gbc.gridx = 2;
         gbc.gridy = 8;
         gbc.gridwidth = 2;
         gbc.ipady = 15;
@@ -298,8 +325,8 @@ public class SudokuGUI extends JFrame {
 		JButton Save = new JButton("Save");
 		Save.setFont(new Font("Arial", Font.BOLD, 15));
 		gbc.weightx = 0.5;
-		gbc.gridx = 2;
-        gbc.gridy = 8;
+		gbc.gridx = 0;
+        gbc.gridy = 10;
         gbc.gridwidth = 2;
         gbc.ipady = 15;
         gbc.fill = GridBagConstraints.HORIZONTAL;		
@@ -319,7 +346,7 @@ public class SudokuGUI extends JFrame {
 		JButton Back = new JButton("Back");
 		Back.setFont(new Font("Arial", Font.BOLD, 15));
 		gbc.weightx = 0.5;
-		gbc.gridx = 0;
+		gbc.gridx = 2;
         gbc.gridy = 10;
         gbc.gridwidth = 2;
         gbc.ipady = 15;
@@ -339,23 +366,6 @@ public class SudokuGUI extends JFrame {
 		    }
 		});
         buttons.add(Back, gbc);
-        
-		JButton Reset = new JButton("Reset");
-		Reset.setFont(new Font("Arial", Font.BOLD, 15));
-		gbc.weightx = 0.5;
-		gbc.gridx = 2;
-        gbc.gridy = 10;
-        gbc.gridwidth = 2;
-        gbc.ipady = 15;
-        gbc.fill = GridBagConstraints.HORIZONTAL;		
-        Reset.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent event) {
-				sudokuBoard.reset();
-		    }
-		});
-        buttons.add(Reset, gbc);
-        JLabel time = new JLabel(" ", JLabel.CENTER);
 
 		return buttons;
 	}
