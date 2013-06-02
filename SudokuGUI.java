@@ -321,7 +321,7 @@ public class SudokuGUI extends JFrame {
 		gbc.weightx = 0.5;
 		gbc.gridx = 0;
         gbc.gridy = 10;
-        gbc.gridwidth = 4;
+        gbc.gridwidth = 2;
         gbc.ipady = 15;
         gbc.fill = GridBagConstraints.HORIZONTAL;		
         Back.addActionListener(new ActionListener()
@@ -339,6 +339,22 @@ public class SudokuGUI extends JFrame {
 		    }
 		});
         buttons.add(Back, gbc);
+        
+		JButton Reset = new JButton("Reset");
+		Reset.setFont(new Font("Arial", Font.BOLD, 15));
+		gbc.weightx = 0.5;
+		gbc.gridx = 2;
+        gbc.gridy = 10;
+        gbc.gridwidth = 2;
+        gbc.ipady = 15;
+        gbc.fill = GridBagConstraints.HORIZONTAL;		
+        Reset.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent event) {
+				sudokuBoard.reset();
+		    }
+		});
+        buttons.add(Reset, gbc);
 
 		return buttons;
 	}
