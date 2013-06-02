@@ -19,7 +19,7 @@ public class BoardGUI extends JPanel {
 	private Cell nothingCell;
 	private Cell chosenCell;
 	private SudokuGenerator generator;
-	private SudokuBoard sudokuBoard; 
+	private SudokuBoard sudokuBoard;
 	private SudokuBoard solution;
 	private int difficulty;
 
@@ -69,8 +69,8 @@ public class BoardGUI extends JPanel {
 		Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
 		setLocation((d.width / 2 - 175), (d.height / 2 - 275));
 		populateBoard(sudokuBoard);
-		for (int col = 0; col < 9; col++) {
-			for (int row = 0; row < 9; row++) {
+		for (int row = 8 ; row >= 0; row--) {
+			for (int col = 0; col < 9; col++) {
 				boolean status;
 				if (editableArray[col][row]==1) {
 					status = true;
@@ -232,6 +232,11 @@ public class BoardGUI extends JPanel {
 		}
 
 		return true;
+	}
+	
+	public void reset() {
+		sudokuBoard = generator.getBoard();
+		populateBoard(sudokuBoard);
 	}
 
 	public void displayHint() {
