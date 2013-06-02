@@ -213,8 +213,8 @@ public class BoardGUI extends JPanel {
                 String number = Integer.toString(sudoku.getNumber(col, row));
                 if(!number.equals("0")) {
                     board[col][row].setText(number);
-                    board[col][row].setForeground(Color.GRAY);
-                    board[col][row].setEditable(false);
+                	board[col][row].setEditable(false);
+		            board[col][row].setForeground(Color.MAGENTA);
                 }
             }
         }
