@@ -355,6 +355,7 @@ public class SudokuGUI extends JFrame {
 		    }
 		});
         buttons.add(Reset, gbc);
+        JLabel time = new JLabel(" ", JLabel.CENTER);
 
 		return buttons;
 	}
