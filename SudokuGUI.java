@@ -76,10 +76,11 @@ public class SudokuGUI extends JFrame {
 	 * @param editableArray
 	 * @param menu
 	 */
-	public SudokuGUI(int[][] boardArray, int difficulty, int[][] editableArray, MainMenu menu, int time) {
+	public SudokuGUI(int[][] boardArray, int difficulty, 
+			int[][] editableArray, MainMenu menu, int time, int hints) {
 		
 		this.difficulty = difficulty;
-		this.hints = 2 * difficulty;
+		this.hints = hints;
 		this.menu = menu;
 		sudokuBoard = new BoardGUI(boardArray, difficulty, editableArray);
 		
@@ -348,7 +349,7 @@ public class SudokuGUI extends JFrame {
 		{
 			public void actionPerformed(ActionEvent event) {
 				try {
-					sudokuBoard.save(clock.getTime());
+					sudokuBoard.save(clock.getTime(), hints);
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -369,7 +370,7 @@ public class SudokuGUI extends JFrame {
 		{
 			public void actionPerformed(ActionEvent event) {
 				try {
-					sudokuBoard.save(clock.getTime());
+					sudokuBoard.save(clock.getTime(), hints);
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

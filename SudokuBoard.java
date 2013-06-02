@@ -83,7 +83,7 @@ public class SudokuBoard {
 		}
 	}
 
-	public void saveState(int difficulty, int time, 
+	public void saveState(int difficulty, int time, int hints,
 			boolean[][] editableArray) throws IOException {
 		File save = new File("save.txt");
 		save.createNewFile();
@@ -93,6 +93,9 @@ public class SudokuBoard {
 		writer.write("\n");
 		Integer difficultyInteger = (Integer)difficulty;
 		writer.write(difficultyInteger.toString());
+		writer.write("\n");
+		Integer hintsInteger = (Integer)hints;
+		writer.write(hintsInteger.toString());
 		writer.write("\n");
 		for (int row = 8; row >= 0; row--) {
 			for (int col = 0; col < 9; col++) {

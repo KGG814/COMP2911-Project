@@ -9,6 +9,8 @@ public class ContinueFileParser {
 	private int time;
 	private int[][] boardArray;
 	private int[][] editableArray;
+	private int hints;
+	
 	ContinueFileParser (File f) {
 		this.f = f;
 		boardArray = new int[9][9];
@@ -19,6 +21,7 @@ public class ContinueFileParser {
 		Scanner in = new Scanner(new FileReader("save.txt"));
 		time = in.nextInt();
 		difficulty = in.nextInt();
+		hints = in.nextInt();
 		for (int row = 8; row >=0; row--) {
 			for (int col = 0; col < 9; col++) {
 				boardArray[col][row] = in.nextInt();
@@ -46,5 +49,9 @@ public class ContinueFileParser {
 	
 	int[][] getEditableArray() {
 		return editableArray;
+	}
+	
+	int getHints() {
+		return hints;
 	}
 }
