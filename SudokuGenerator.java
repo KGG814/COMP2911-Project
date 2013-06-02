@@ -190,6 +190,12 @@ public class SudokuGenerator {
 	}
 
 	SudokuBoard getBoard() {
-		return board;
+		int[][] array = new int[9][9];
+		for (int col = 0; col<9; col++) {
+			for (int row=0; row<9; row++) {
+				array[col][row]=board.getNumber(col, row);
+			}
+		}
+		return new SudokuBoard (array);
 	}
 }
