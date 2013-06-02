@@ -82,12 +82,12 @@ public class HighList {
         } else {
             String msg = "";
             // msg += "<html><body><ol>";
-            int i = 1;
+            //int i = 1;
             for(HighListItem I : list){
-                msg += i;
-                msg += ". ";
+                //msg += i;
+                //msg += ". ";
                 msg += I.getRecord();
-                i++;
+                //i++;
             }
             // msg += "</ol></body></html>";
             return msg;
