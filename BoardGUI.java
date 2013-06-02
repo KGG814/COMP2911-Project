@@ -235,8 +235,14 @@ public class BoardGUI extends JPanel {
 	}
 	
 	public void reset() {
-		sudokuBoard = generator.getBoard();
-		populateBoard(sudokuBoard);
+		for(int row = 0; row < 9; row++) {
+			for(int col = 0; col < 9; col++) {
+				if(board[col][row].getEditable()) {
+					board[col][row].setText("");
+					sudokuBoard.setNumber(col, row, 0);
+				}
+			}
+		}
 	}
 
 	public void displayHint() {
