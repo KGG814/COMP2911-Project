@@ -5,23 +5,30 @@ import java.util.TimerTask;
 
 import javax.swing.JLabel;
 
-
+/**
+ *A class used to create and display the time
+ *for the sudoku board
+ *Used to calculate the high scores 
+ *
+ */
 public class ClockLabel extends JLabel {
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
-	protected int time;
+	private int time;
 	private Timer timer  = new Timer();
 	ClockLabel (int time) {
 		this.time = time;
 		timer.schedule(new ClockTask(this), 0, 1000);
 	}
-
+	
+	/**
+	 * Get the current time
+	 * @return
+	 */
 	public int getTime () {
 		return time;
 	}
-	
+
 	private class ClockTask extends TimerTask {
 
 		JLabel timerLabel;
@@ -40,5 +47,4 @@ public class ClockLabel extends JLabel {
 		}
 
 	}
-
 }
