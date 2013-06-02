@@ -64,11 +64,6 @@ public class SudokuBoard {
 	}
 
 	boolean numberIsLegal (int row, int col, int num) {
-		//System.out.println(row);
-		//System.out.println(col);
-		System.out.println(isLegalCol(col, row, num));
-		System.out.println(isLegalRow(row, col, num));
-		System.out.println(isLegalBox(row, col, num));
 		if (isLegalRow(row, col, num)&&isLegalCol(col, row, num)&&isLegalBox(row,col,num)) {
 			return true;
 		} else if (num == 0) {
@@ -88,10 +83,14 @@ public class SudokuBoard {
 		}
 	}
 
-	public void saveState(int difficulty, boolean[][] editableArray) throws IOException {
+	public void saveState(int difficulty, int time, 
+			boolean[][] editableArray) throws IOException {
 		File save = new File("save.txt");
 		save.createNewFile();
 		FileWriter writer = new FileWriter(save);
+		Integer timeInteger = (Integer)time;
+		writer.write(timeInteger.toString());
+		writer.write("\n");
 		Integer difficultyInteger = (Integer)difficulty;
 		writer.write(difficultyInteger.toString());
 		writer.write("\n");

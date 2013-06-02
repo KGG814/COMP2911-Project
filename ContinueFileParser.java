@@ -6,6 +6,7 @@ import java.util.Scanner;
 public class ContinueFileParser {
 	File f;
 	private int difficulty;
+	private int time;
 	private int[][] boardArray;
 	private int[][] editableArray;
 	ContinueFileParser (File f) {
@@ -16,6 +17,7 @@ public class ContinueFileParser {
 	
 	void Parse () throws FileNotFoundException {
 		Scanner in = new Scanner(new FileReader("save.txt"));
+		time = in.nextInt();
 		difficulty = in.nextInt();
 		for (int row = 8; row >=0; row--) {
 			for (int col = 0; col < 9; col++) {
@@ -32,6 +34,10 @@ public class ContinueFileParser {
 	
 	int getDifficulty () {
 		return difficulty;
+	}
+	
+	int getTime () {
+		return time;
 	}
 	
 	int[][] getBoardArray () {

@@ -18,6 +18,10 @@ public class ClockLabel extends JLabel {
 		timer.schedule(new ClockTask(this), 0, 1000);
 	}
 
+	public int getTime () {
+		return time;
+	}
+	
 	private class ClockTask extends TimerTask {
 
 		JLabel timerLabel;

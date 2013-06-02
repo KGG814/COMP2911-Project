@@ -52,7 +52,7 @@ public class SudokuGUI extends JFrame {
 		
 		JPanel panel = new JPanel();
     	panel.setBackground(new Color(255, 231, 186));
-		JPanel buttons = setButtons();
+		JPanel buttons = setButtons(0);
 		panel.add(sudokuBoard);
 		panel.add(buttons);
 		add(panel, BorderLayout.CENTER);
@@ -68,8 +68,9 @@ public class SudokuGUI extends JFrame {
 		
 	}
 
-	public SudokuGUI(int[][] boardArray, int difficulty, int[][] editableArray, MainMenu menu) {
-		
+	public SudokuGUI(int[][] boardArray, int difficulty, 
+			int[][] editableArray, MainMenu menu, int time) {
+		System.out.println(time);
 		this.difficulty = difficulty;
 		this.hints = 2 * difficulty;
 		this.menu = menu;
@@ -81,7 +82,7 @@ public class SudokuGUI extends JFrame {
 		
 		JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER));
     	panel.setBackground(new Color(255, 231, 186));
-		JPanel buttons = setButtons();
+		JPanel buttons = setButtons(time);
 		panel.add(sudokuBoard);
 		panel.add(buttons);
 		add(panel, BorderLayout.CENTER);
@@ -101,14 +102,14 @@ public class SudokuGUI extends JFrame {
 	 * 
 	 * @return A JPanel that creates all the buttons
 	 */
-	public JPanel setButtons() {
+	public JPanel setButtons(int time) {
 		JPanel buttons = new JPanel();
     	buttons.setLayout(new GridBagLayout());
     	buttons.setBackground(new Color(255, 231, 186));
     	GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5,5,5,5);
         
-        clock = new ClockLabel(0);
+        clock = new ClockLabel(time);
        
         gbc.weightx = 0.5;
 		gbc.gridx = 0;
@@ -334,7 +335,7 @@ public class SudokuGUI extends JFrame {
 		{
 			public void actionPerformed(ActionEvent event) {
 				try {
-					sudokuBoard.save();
+					sudokuBoard.save(clock.getTime());
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -355,7 +356,7 @@ public class SudokuGUI extends JFrame {
 		{
 			public void actionPerformed(ActionEvent event) {
 				try {
-					sudokuBoard.save();
+					sudokuBoard.save(clock.getTime());
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

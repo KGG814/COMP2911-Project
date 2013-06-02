@@ -90,7 +90,12 @@ public class MainMenu extends JFrame{
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					new SudokuGUI(c.getBoardArray(), c.getDifficulty(), c.getEditableArray(), main);
+					System.out.print("Time ");
+					System.out.println(c.getTime());
+					System.out.print("Difficulty ");
+					System.out.println(c.getDifficulty());
+					new SudokuGUI(c.getBoardArray(), c.getDifficulty(), 
+							c.getEditableArray(), main, c.getTime());
 					dispose();
 				} else {
 					//Do nothing
