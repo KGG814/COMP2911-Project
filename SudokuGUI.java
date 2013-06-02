@@ -16,18 +16,17 @@ import javax.swing.JTextField;
 
 /**
  * The GUI Class to hold everything for the sudoku puzzle
- * which includes the sudoku board, buttons and images if
- * we want
+ * which includes the sudoku board and buttons
  *
  */
 public class SudokuGUI extends JFrame {
 
-
-	/**
-	 * For some reason I have to put an ID
-	 */
 	private static final long serialVersionUID = 1L;
 	
+	/**
+	 * Main menu is included so we can go back to the main menu and the
+	 * difficulty is the same
+	 */
 	private MainMenu menu;
 	private BoardGUI sudokuBoard;
 	private SolutionGUI currentSolution;
@@ -37,9 +36,7 @@ public class SudokuGUI extends JFrame {
 	private JLabel hintLabel;
 	private ClockLabel clock;
 	
-	/**
-	 * Puts everything on the JFrame
-	 */
+
 	public SudokuGUI(int difficulty, MainMenu menu) {
 
 		this.difficulty = difficulty;
@@ -76,11 +73,10 @@ public class SudokuGUI extends JFrame {
 	 * @param editableArray
 	 * @param menu
 	 */
-	public SudokuGUI(int[][] boardArray, int difficulty, 
-			int[][] editableArray, MainMenu menu, int time, int hints) {
+	public SudokuGUI(int[][] boardArray, int difficulty, int[][] editableArray, MainMenu menu, int time) {
 		
 		this.difficulty = difficulty;
-		this.hints = hints;
+		this.hints = 2 * difficulty;
 		this.menu = menu;
 		sudokuBoard = new BoardGUI(boardArray, difficulty, editableArray);
 		
@@ -111,6 +107,17 @@ public class SudokuGUI extends JFrame {
 	 * @return A JPanel the side panel used to store all the options available
 	 * during the game
 	 * Includes: 
+	 * - the timer
+	 * - the difficulty of the game
+	 * - The number of hints available
+	 * - New Button: Creates a new board with the same difficulty
+	 * - Reset: Clear board and start again
+	 * - Get Hint: Get a hint from the board. the hint cannot be changed
+	 * - Delete: delete a cell that can be deleted
+	 * - Check: check if the board is solved
+	 * - Solution: view the solution of the board
+	 * - Save: Save the current state of the board
+	 * - Back go back to the main menu
 	 */
 	public JPanel setButtons(int time) {
 		JPanel buttons = new JPanel();
@@ -119,6 +126,7 @@ public class SudokuGUI extends JFrame {
     	GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5,5,5,5);
         
+        //Display the current time
         clock = new ClockLabel(time);
         gbc.weightx = 0.5;
 		gbc.gridx = 0;
@@ -128,6 +136,7 @@ public class SudokuGUI extends JFrame {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         buttons.add(clock, gbc);
         
+        //Display the difficulty
         diffLabel = new JLabel("Difficulty: " + Integer.toString(difficulty));
         diffLabel.setFont(new Font("Arial", Font.BOLD, 17));
         gbc.weightx = 0.5;
@@ -138,6 +147,8 @@ public class SudokuGUI extends JFrame {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         buttons.add(diffLabel, gbc);
         
+        //Display the number of hints available
+        //Hints are two times the difficulty
         hintLabel = new JLabel("Hints: " + Integer.toString(hints));
         hintLabel.setFont(new Font("Arial", Font.BOLD, 17));
         gbc.weightx = 0.5;
@@ -148,6 +159,7 @@ public class SudokuGUI extends JFrame {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         buttons.add(hintLabel, gbc);
         
+        //Create a new game
 		JButton New = new JButton("New");
 		New.setFont(new Font("Arial", Font.BOLD, 15));
 		gbc.weightx = 0.5;
@@ -159,13 +171,13 @@ public class SudokuGUI extends JFrame {
 		New.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent event) {
-				//add something
 				new SudokuGUI(difficulty, menu);
 				dispose();
 		    }
 		});
 		buttons.add(New, gbc);
 		
+		//Resets the board to the beginning
 		JButton Reset = new JButton("Reset");
 		Reset.setFont(new Font("Arial", Font.BOLD, 15));
 		gbc.weightx = 0.5;
@@ -182,7 +194,7 @@ public class SudokuGUI extends JFrame {
 		});
         buttons.add(Reset, gbc);
 
-		//put display for number of hints left
+        //Display a hint of the board
 		JButton GetHint = new JButton("Get Hint");
 		GetHint.setFont(new Font("Arial", Font.BOLD, 15));
 		gbc.weightx = 0.5;
@@ -203,6 +215,7 @@ public class SudokuGUI extends JFrame {
 		});
         buttons.add(GetHint, gbc);
 
+        //Delete a cell
 		JButton Delete = new JButton("Delete");
 		Delete.setFont(new Font("Arial", Font.BOLD, 15));
 		gbc.weightx = 0.5;
@@ -220,18 +233,18 @@ public class SudokuGUI extends JFrame {
 		});	
         buttons.add(Delete, gbc);
 
-		JButton Solve = new JButton("Check");
-		Solve.setFont(new Font("Arial", Font.BOLD, 15));
+        
+		JButton Check = new JButton("Check");
+		Check.setFont(new Font("Arial", Font.BOLD, 15));
 		gbc.weightx = 0.5;
 		gbc.gridx = 0;
         gbc.gridy = 8;
         gbc.gridwidth = 2;
         gbc.ipady = 15;
         gbc.fill = GridBagConstraints.HORIZONTAL;		
-        Solve.addActionListener(new ActionListener()
+        Check.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent event) {
-				//add something
 				final JFrame answer = new JFrame();
 				answer.setLayout(new FlowLayout(FlowLayout.CENTER));
 				answer.pack();
@@ -241,9 +254,9 @@ public class SudokuGUI extends JFrame {
 				answer.setResizable(true);
 				answer.setVisible(true);
 				JPanel panel = new JPanel();
-				if (!sudokuBoard.checkSolution()) {
-					//instead of dispose call the saveRecord if it is correct
-					//open new window and have textfield to save name.
+				//If successful, open a window for them to enter their name
+				//If unsuccessful, open a window with a message
+				if (sudokuBoard.checkSolution()) {
 					answer.setTitle("SUCCESS :)");
 
 					panel.setLayout(new GridBagLayout());
@@ -269,8 +282,9 @@ public class SudokuGUI extends JFrame {
 
 						@Override
 						public void keyPressed(KeyEvent arg0) {
-							// TODO Auto-generated method stub
 							//Prevents from entering a name that is just spaces of empty
+							//If the user enters more than one word. It just combines the first two words
+							//and stores that as the name
 							if(!((JTextField) arg0.getSource()).getText().isEmpty() && !((JTextField) arg0.getSource()).getText().trim().isEmpty()) {
 								if(arg0.getKeyCode() == KeyEvent.VK_ENTER) { 
 						            String name  = (String) ((JTextField) arg0.getSource()).getText();
@@ -286,14 +300,10 @@ public class SudokuGUI extends JFrame {
 
 						@Override
 						public void keyReleased(KeyEvent arg0) {
-							// TODO Auto-generated method stub
-							
 						}
 
 						@Override
 						public void keyTyped(KeyEvent arg0) {
-							// TODO Auto-generated method stub
-							
 						}
 						
 					});
@@ -315,7 +325,7 @@ public class SudokuGUI extends JFrame {
 				answer.add(panel);
 		    }
 		});
-        buttons.add(Solve, gbc);
+        buttons.add(Check, gbc);
 
 		JButton Solution = new JButton("Solution");
 		Solution.setFont(new Font("Arial", Font.BOLD, 15));
@@ -349,9 +359,8 @@ public class SudokuGUI extends JFrame {
 		{
 			public void actionPerformed(ActionEvent event) {
 				try {
-					sudokuBoard.save(clock.getTime(), hints);
+					sudokuBoard.save(clock.getTime());
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 		    }
@@ -370,9 +379,8 @@ public class SudokuGUI extends JFrame {
 		{
 			public void actionPerformed(ActionEvent event) {
 				try {
-					sudokuBoard.save(clock.getTime(), hints);
+					sudokuBoard.save(clock.getTime());
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				
