@@ -304,13 +304,13 @@ public class BoardGUI extends JPanel {
 	 * @param time
 	 * @throws IOException
 	 */
-	public void save (int time) throws IOException {
+	public void save (int time, int hints) throws IOException {
 		boolean[][] editableArray = new boolean[9][9];
 		for (int col = 0; col < 9; col++) {
 			for (int row = 0; row < 9; row++) {
 				editableArray[col][row] = board[col][row].getEditable();
 			}
 		}
-		sudokuBoard.saveState(difficulty, time, editableArray);
+		sudokuBoard.saveState(difficulty, time, hints, editableArray);
 	}
 }

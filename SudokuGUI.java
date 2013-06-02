@@ -359,7 +359,7 @@ public class SudokuGUI extends JFrame {
 		{
 			public void actionPerformed(ActionEvent event) {
 				try {
-					sudokuBoard.save(clock.getTime());
+					sudokuBoard.save(clock.getTime(), hints);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -379,7 +379,7 @@ public class SudokuGUI extends JFrame {
 		{
 			public void actionPerformed(ActionEvent event) {
 				try {
-					sudokuBoard.save(clock.getTime());
+					sudokuBoard.save(clock.getTime(), hints);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
