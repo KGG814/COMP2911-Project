@@ -5,24 +5,34 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * GUI class for the main menu. Contains buttons to the other
+ * GUI's
+ * New Game: Creates a sudoku board
+ * Continue: Continues from the last saved board
+ * Settings: Settings of the game
+ * HighScores: Display high scores
+ *
+ */
 public class MainMenu extends JFrame{  
 
 	private static final long serialVersionUID = 1L;
+	
+	//Contains a main menu so when we go back to the main menu
+	//the settings are still the same
 	private MainMenu main;
 	private SettingGUI settings;
 	private HighGUI highscores;
 
     public MainMenu() {
     	
-     	//Set JFrame Properties
     	this.main = this;
-    	setLayout(new BorderLayout());
 		setContentPane(new JLabel(new ImageIcon("ui/b2.jpg")));	
 		setLayout(new FlowLayout(FlowLayout.CENTER));
     	JPanel menu = Menu();
-    	menu.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY));
     	add(menu, BorderLayout.CENTER);
 
+    	//Set JFrame Properties
     	setTitle("Interactive Sudoku");
     	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		pack();
@@ -34,6 +44,16 @@ public class MainMenu extends JFrame{
 
     }
     
+    /**
+     * 
+     * @return a panel that contains all the main menu aspects
+     * - Image
+     * - Buttons
+     * New Game: Creates a new Sudoku Game
+     * Continue: Continues from last sudoku
+     * Settings: Settings of game
+     * High Scores: View past high scores
+     */
     public JPanel Menu() {
     	JPanel buttons = new JPanel();
     	buttons.setLayout(new GridBagLayout());
@@ -87,14 +107,10 @@ public class MainMenu extends JFrame{
 					try {
 						c.Parse();
 					} catch (FileNotFoundException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					new SudokuGUI(c.getBoardArray(), c.getDifficulty(), 
-							c.getEditableArray(), main, c.getTime(), c.getHints());
+					new SudokuGUI(c.getBoardArray(), c.getDifficulty(), c.getEditableArray(), main, c.getTime());
 					dispose();
-				} else {
-					//Do nothing
 				}
 		    }
 		});
