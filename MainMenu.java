@@ -12,7 +12,7 @@ import java.awt.event.ActionListener;
  * Continue: Continues from the last saved board
  * Settings: Settings of the game
  * HighScores: Display high scores
- *
+ * Link for background : http://www.facebook.com/l.php?u=http%3A%2F%2Fwhdbg.com%2Fbackground-wallpaper-photoshop.html&h=-AQHjmEIH
  */
 public class MainMenu extends JFrame{  
 
